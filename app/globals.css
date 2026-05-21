@@ -69,18 +69,18 @@
   --sidebar-border: #D8DEE4;
   --sidebar-ring: #006FEE;
   
-  /* 阴影系统 - 克制微妙 */
+  /* 阴影系统 - 增强层级感 */
   --shadow-x: 0px;
-  --shadow-y: 1px;
-  --shadow-blur: 2px;
+  --shadow-y: 2px;
+  --shadow-blur: 4px;
   --shadow-spread: 0px;
-  --shadow-opacity: 0.04;
+  --shadow-opacity: 0.08;
   --shadow-color: #000000;
   
   /* 卡片阴影 */
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.06);
-  --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 8px 16px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
+  --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.16), 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* 深色模式 - 标注工作台专用 */
@@ -226,15 +226,15 @@
 
 /* imed Design System - 自定义工具类 */
 @layer utilities {
-  /* 卡片阴影 - 替代 border */
+  /* 卡片阴影 - 替代 border，增强层级 */
   .shadow-card {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
   }
   .shadow-card-hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
   }
   .shadow-elevated {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16), 0 6px 12px rgba(0, 0, 0, 0.1);
   }
   
   /* Pill 按钮圆角 */
@@ -261,11 +261,11 @@
   .card-imed {
     background-color: var(--card);
     border-radius: 0.75rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
     transition: box-shadow 0.2s ease;
   }
   .card-imed:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
   }
   
   /* Mono 数字字体 */
