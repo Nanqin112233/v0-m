@@ -190,7 +190,7 @@ export default function HomePage() {
       {/* 主内容区 */}
       <main className="flex-1">
         {/* Hero 区域 */}
-        <section className="border-b border-border bg-gradient-to-b from-accent/50 to-background">
+        <section className="bg-gradient-to-b from-accent/50 to-background">
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
             <div className="text-center">
               <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl text-balance leading-tight">
@@ -222,7 +222,7 @@ export default function HomePage() {
         </section>
 
         {/* 业务闭环时间线 */}
-        <section className="border-b border-border bg-card">
+        <section className="bg-card shadow-sm">
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
@@ -236,13 +236,13 @@ export default function HomePage() {
             {/* 时间线 */}
             <div className="relative">
               {/* 连接线 */}
-              <div className="absolute top-12 left-0 right-0 h-0.5 bg-border hidden lg:block" />
+              <div className="absolute top-12 left-0 right-0 h-0.5 bg-muted hidden lg:block" />
               
               <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
                 {workflowSteps.map((step, index) => (
                   <div key={step.title} className="relative flex flex-col items-center text-center">
                     {/* 步骤圆点 */}
-                    <div className={`relative z-10 flex h-24 w-24 items-center justify-center rounded-2xl ${step.color} border border-border bg-background`}>
+                    <div className={`relative z-10 flex h-24 w-24 items-center justify-center rounded-2xl ${step.color} bg-background shadow-sm`}>
                       <step.icon className="h-10 w-10" />
                     </div>
                     {/* 步骤编号 */}
@@ -263,11 +263,11 @@ export default function HomePage() {
         </section>
 
         {/* 关键指标卡片（克制呈现） */}
-        <section className="border-b border-border">
+        <section>
           <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
               {platformStats.map((stat) => (
-                <Card key={stat.title} className="border border-border">
+                <Card key={stat.title}>
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent">
@@ -286,7 +286,7 @@ export default function HomePage() {
         </section>
 
         {/* 热门数据集 + 热门任务 */}
-        <section className="border-b border-border">
+        <section>
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             {/* 热门数据集 */}
             <div className="mb-12">
@@ -298,7 +298,7 @@ export default function HomePage() {
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {hotDatasets.map((dataset) => (
-                  <Card key={dataset.id} className="border border-border hover:border-primary/30 transition-colors cursor-pointer">
+                  <Card key={dataset.id} className="hover:shadow-md transition-shadow cursor-pointer">
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1 min-w-0">
@@ -331,7 +331,7 @@ export default function HomePage() {
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {hotTasks.map((task) => (
-                  <Card key={task.id} className="border border-border hover:border-primary/30 transition-colors cursor-pointer">
+                  <Card key={task.id} className="hover:shadow-md transition-shadow cursor-pointer">
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between gap-2">
                         <CardTitle className="text-base flex-1 min-w-0 truncate">{task.title}</CardTitle>
@@ -364,7 +364,7 @@ export default function HomePage() {
         </section>
 
         {/* 信任阶梯（L0 + Lv1~Lv9） */}
-        <section className="border-b border-border bg-card">
+        <section className="bg-card shadow-sm">
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
               <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
@@ -381,10 +381,10 @@ export default function HomePage() {
                 {levelDescriptions.map((item) => (
                   <div
                     key={item.level}
-                    className={`flex flex-col items-center p-4 rounded-xl border ${
+                    className={`flex flex-col items-center p-4 rounded-xl ${
                       item.highlight 
-                        ? "border-[#0F8770] bg-[#0F8770]/5" 
-                        : "border-border bg-background"
+                        ? "bg-[#0F8770]/5 shadow-md" 
+                        : "bg-background shadow-sm"
                     } min-w-[100px]`}
                   >
                     {item.level === 0 ? (
@@ -411,7 +411,7 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               <Link href="/data">
-                <Card className="h-full border border-border hover:border-primary/50 hover:shadow-md transition-all group cursor-pointer">
+                <Card className="h-full hover:shadow-lg transition-all group cursor-pointer">
                   <CardHeader>
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                       <Database className="h-6 w-6" />
@@ -427,7 +427,7 @@ export default function HomePage() {
               </Link>
 
               <Link href="/tasks">
-                <Card className="h-full border border-border hover:border-primary/50 hover:shadow-md transition-all group cursor-pointer">
+                <Card className="h-full hover:shadow-lg transition-all group cursor-pointer">
                   <CardHeader>
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#0F8770]/10 text-[#0F8770] group-hover:bg-[#0F8770] group-hover:text-white transition-colors">
                       <ClipboardList className="h-6 w-6" />
@@ -443,7 +443,7 @@ export default function HomePage() {
               </Link>
 
               <Link href="/rankings">
-                <Card className="h-full border border-border hover:border-primary/50 hover:shadow-md transition-all group cursor-pointer">
+                <Card className="h-full hover:shadow-lg transition-all group cursor-pointer">
                   <CardHeader>
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-colors">
                       <Trophy className="h-6 w-6" />
@@ -459,7 +459,7 @@ export default function HomePage() {
               </Link>
 
               <Link href="/community">
-                <Card className="h-full border border-border hover:border-primary/50 hover:shadow-md transition-all group cursor-pointer">
+                <Card className="h-full hover:shadow-lg transition-all group cursor-pointer">
                   <CardHeader>
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/10 text-purple-600 group-hover:bg-purple-500 group-hover:text-white transition-colors">
                       <MessageSquare className="h-6 w-6" />

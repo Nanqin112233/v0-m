@@ -124,10 +124,9 @@ export function TaskStatusBadge({
     <Badge
       variant="outline"
       className={cn(
-        "font-medium gap-1 border",
+        "font-medium gap-1 rounded-full shadow-sm",
         config.bgColor,
         config.color,
-        config.borderColor,
         sizeClasses[size],
         className
       )}
@@ -225,10 +224,9 @@ export function DatasetStatusBadge({
     <Badge
       variant="outline"
       className={cn(
-        "font-medium gap-1 border",
+        "font-medium gap-1 rounded-full shadow-sm",
         config.bgColor,
         config.color,
-        config.borderColor,
         sizeClasses[size],
         className
       )}

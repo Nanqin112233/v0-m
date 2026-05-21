@@ -74,7 +74,7 @@ export function Header({
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80",
+        "sticky top-0 z-50 w-full bg-card/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-card/80",
         className
       )}
     >
@@ -90,17 +90,17 @@ export function Header({
             {navItems.map((item) => {
               const isActive = pathname === item.href
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => handleNavClick(item.href)}
-                  className={cn(
-                    "px-3 py-2 text-sm font-medium rounded-md transition-colors",
-                    isActive
-                      ? "text-primary bg-accent"
-                      : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
-                  )}
-                >
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => handleNavClick(item.href)}
+                      className={cn(
+                        "px-4 py-2 text-sm font-medium rounded-full transition-all",
+                        isActive
+                          ? "text-primary-foreground bg-primary shadow-sm"
+                          : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                      )}
+                    >
                   {item.label}
                 </Link>
               )
@@ -182,10 +182,10 @@ export function Header({
                       href={item.href}
                       onClick={() => handleNavClick(item.href)}
                       className={cn(
-                        "px-4 py-3 text-base font-medium rounded-lg transition-colors",
+                        "px-4 py-3 text-base font-medium rounded-full transition-all",
                         isActive
-                          ? "text-primary bg-accent"
-                          : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                          ? "text-primary-foreground bg-primary shadow-sm"
+                          : "text-muted-foreground hover:text-foreground hover:bg-accent hover:shadow-sm"
                       )}
                     >
                       {item.label}
@@ -195,7 +195,7 @@ export function Header({
 
                 {/* 移动端钱包信息 */}
                 {isLoggedIn && wallet && (
-                  <div className="mt-4 pt-4 border-t border-border">
+                  <div className="mt-4 pt-4">
                     <WalletPreview
                       balance={wallet.balance}
                       locked={wallet.locked}

@@ -47,8 +47,8 @@ export function WalletPreview({
         <TooltipTrigger asChild>
           <button
             className={cn(
-              "flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5",
-              "hover:bg-accent/50 transition-colors cursor-pointer",
+              "flex items-center gap-2 rounded-full bg-card px-4 py-2 shadow-sm",
+              "hover:shadow-md transition-all cursor-pointer",
               "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
               className
             )}

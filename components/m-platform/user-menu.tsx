@@ -78,8 +78,8 @@ export function UserMenu({
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "flex items-center gap-2 rounded-lg px-2 py-1.5",
-            "hover:bg-accent/50 transition-colors cursor-pointer",
+            "flex items-center gap-2 rounded-full px-2 py-1.5 shadow-sm",
+            "hover:shadow-md transition-all cursor-pointer",
             "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
             className
           )}
@@ -104,7 +104,7 @@ export function UserMenu({
             <Badge
               variant="secondary"
               className={cn(
-                "px-1.5 py-0 text-[10px] font-semibold",
+                "px-2 py-0 text-[10px] font-semibold rounded-full shadow-sm",
                 levelInfo.bgColor,
                 levelInfo.color
               )}
@@ -123,7 +123,7 @@ export function UserMenu({
               <Badge
                 variant="secondary"
                 className={cn(
-                  "px-1.5 py-0 text-[10px] font-semibold",
+                  "px-2 py-0 text-[10px] font-semibold rounded-full shadow-sm",
                   levelInfo.bgColor,
                   levelInfo.color
                 )}

@@ -387,10 +387,10 @@ export default function DataMarketplacePage() {
                   {filteredDatasets.map((dataset) => (
                     <Card
                       key={dataset.id}
-                      className="border border-border hover:border-primary/30 hover:shadow-sm transition-all cursor-pointer group"
+                      className="hover:shadow-md transition-all cursor-pointer group"
                     >
                       {/* 封面图区域 */}
-                      <div className="aspect-[16/9] bg-muted rounded-t-lg flex items-center justify-center border-b border-border">
+                      <div className="aspect-[16/9] bg-muted rounded-t-xl flex items-center justify-center">
                         <Database className="h-12 w-12 text-muted-foreground/30" />
                       </div>
                       <CardHeader className="pb-3">
@@ -420,7 +420,7 @@ export default function DataMarketplacePage() {
                           </Badge>
                           <DatasetStatusBadge status={dataset.status} />
                         </div>
-                        <div className="flex items-center justify-between pt-2 border-t border-border">
+                        <div className="flex items-center justify-between pt-3 mt-3">
                           <span className="text-sm text-muted-foreground">
                             <span className="font-mono font-medium text-foreground">{dataset.samples.toLocaleString()}</span> 样本
                           </span>
@@ -433,7 +433,7 @@ export default function DataMarketplacePage() {
                   ))}
                 </div>
               ) : (
-                <Card className="border border-dashed">
+                <Card className="bg-muted/30">
                   <CardContent className="py-16 text-center">
                     <Database className="mx-auto h-12 w-12 text-muted-foreground/30" />
                     <h3 className="mt-4 text-lg font-medium text-foreground">未找到匹配的数据集</h3>
