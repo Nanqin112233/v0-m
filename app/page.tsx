@@ -208,9 +208,11 @@ export default function HomePage() {
                     </Link>
                   </Button>
                 ) : (
-                  <Button size="lg" className="bg-primary hover:bg-primary/90 h-12 px-8">
-                    立即注册
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                  <Button size="lg" className="bg-primary hover:bg-primary/90 h-12 px-8" asChild>
+                    <Link href="/login">
+                      立即注册
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
                   </Button>
                 )}
                 <Button size="lg" variant="outline" className="h-12 px-8" asChild>
@@ -371,7 +373,7 @@ export default function HomePage() {
                 信任阶梯
               </h2>
               <p className="mt-3 text-muted-foreground">
-                L0 + Lv1~Lv9 十级体系，Lv5 及以上解锁审核权限
+                L0 + Lv1~Lv9 十级体系���Lv5 及以上解锁审核权限
               </p>
             </div>
             
