@@ -287,29 +287,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 关键指标卡片（克制呈现） */}
-        <section>
-          <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-              {platformStats.map((stat) => (
-                <Card key={stat.title}>
-                  <CardContent className="pt-6">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent">
-                        {stat.icon}
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">{stat.title}</p>
-                        <p className="text-2xl font-bold text-foreground font-mono">{stat.value}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* 热门数据集 + 热门任务 */}
         <section>
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
