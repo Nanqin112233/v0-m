@@ -133,7 +133,7 @@ const hotTasks = [
     deadline: "2026-06-15",
     claimed: 12,
     maxClaims: 20,
-    status: "active" as const,
+    status: "open" as const,
   },
   {
     id: "T002",
@@ -143,7 +143,7 @@ const hotTasks = [
     deadline: "2026-06-20",
     claimed: 5,
     maxClaims: 10,
-    status: "active" as const,
+    status: "open" as const,
   },
   {
     id: "T003",
@@ -153,7 +153,7 @@ const hotTasks = [
     deadline: "2026-06-10",
     claimed: 18,
     maxClaims: 25,
-    status: "active" as const,
+    status: "open" as const,
   },
 ]
 
