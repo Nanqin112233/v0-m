@@ -12,8 +12,8 @@
   --popover: #FFFFFF;
   --popover-foreground: #1A1D21;
   
-  /* 主色：医疗蓝 */
-  --primary: #1E63B5;
+  /* 主色：亮蓝色 */
+  --primary: #006FEE;
   --primary-foreground: #FFFFFF;
   
   /* 次级色 */
@@ -25,8 +25,8 @@
   --muted-foreground: #5C6670;
   
   /* 强调色 */
-  --accent: #E8F1FA;
-  --accent-foreground: #1E63B5;
+  --accent: #E6F1FE;
+  --accent-foreground: #006FEE;
   
   /* 成功/正向动作：深青绿 */
   --success: #0F8770;
@@ -43,14 +43,14 @@
   /* 边框和输入 - 使用 shadow 替代 border */
   --border: transparent;
   --input: #F0F4F8;
-  --ring: #1E63B5;
+  --ring: #006FEE;
   
-  /* 图表色（医疗蓝渐变） */
-  --chart-1: #1E63B5;
-  --chart-2: #2B7BC9;
-  --chart-3: #4A9AD8;
-  --chart-4: #7AB8E5;
-  --chart-5: #B0D4F1;
+  /* 图表色（亮蓝色渐变） */
+  --chart-1: #006FEE;
+  --chart-2: #338EF7;
+  --chart-3: #66AAF9;
+  --chart-4: #99C7FB;
+  --chart-5: #CCE3FD;
   
   /* 圆角系统 - 医学克制 */
   --radius: 0.75rem;
@@ -62,12 +62,12 @@
   /* 侧边栏 */
   --sidebar: #FFFFFF;
   --sidebar-foreground: #1A1D21;
-  --sidebar-primary: #1E63B5;
+  --sidebar-primary: #006FEE;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #E8F1FA;
-  --sidebar-accent-foreground: #1E63B5;
+  --sidebar-accent: #E6F1FE;
+  --sidebar-accent-foreground: #006FEE;
   --sidebar-border: #D8DEE4;
-  --sidebar-ring: #1E63B5;
+  --sidebar-ring: #006FEE;
   
   /* 阴影系统 - 克制微妙 */
   --shadow-x: 0px;
@@ -92,8 +92,8 @@
   --popover: #161B22;
   --popover-foreground: #E6EDF3;
   
-  /* 主色：医疗蓝（深色模式适配） */
-  --primary: #4A9AD8;
+  /* 主色：亮蓝色（深色模式适配） */
+  --primary: #338EF7;
   --primary-foreground: #0D1117;
   
   /* 次级色 */
@@ -105,8 +105,8 @@
   --muted-foreground: #8B949E;
   
   /* 强调色 */
-  --accent: #1C3A5E;
-  --accent-foreground: #7AB8E5;
+  --accent: #002E62;
+  --accent-foreground: #66AAF9;
   
   /* 成功/正向动作：深青绿 */
   --success: #2EA88A;
@@ -123,24 +123,24 @@
   /* 边框和输入 */
   --border: #30363D;
   --input: #21262D;
-  --ring: #4A9AD8;
+  --ring: #338EF7;
   
   /* 图表色 */
-  --chart-1: #4A9AD8;
-  --chart-2: #7AB8E5;
-  --chart-3: #B0D4F1;
+  --chart-1: #338EF7;
+  --chart-2: #66AAF9;
+  --chart-3: #99C7FB;
   --chart-4: #2EA88A;
   --chart-5: #E3B341;
   
   /* 侧边栏 */
   --sidebar: #161B22;
   --sidebar-foreground: #E6EDF3;
-  --sidebar-primary: #4A9AD8;
+  --sidebar-primary: #338EF7;
   --sidebar-primary-foreground: #0D1117;
-  --sidebar-accent: #1C3A5E;
-  --sidebar-accent-foreground: #7AB8E5;
+  --sidebar-accent: #002E62;
+  --sidebar-accent-foreground: #66AAF9;
   --sidebar-border: #30363D;
-  --sidebar-ring: #4A9AD8;
+  --sidebar-ring: #338EF7;
   
   /* 阴影 */
   --shadow-x: 0px;
