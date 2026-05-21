@@ -16,6 +16,15 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  PaginationEllipsis,
+} from "@/components/ui/pagination"
+import {
   Search,
   SlidersHorizontal,
   Upload,
@@ -155,6 +164,8 @@ export default function DataMarketplacePage() {
   const [selectedStatus, setSelectedStatus] = useState<string>("all")
   const [selectedSampleRange, setSelectedSampleRange] = useState<string>("all")
   const [sortBy, setSortBy] = useState("newest")
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 6
 
   const hasFilters = selectedModalities.length > 0 || selectedSpecialties.length > 0 || selectedStatus !== "all" || selectedSampleRange !== "all"
 
@@ -163,6 +174,7 @@ export default function DataMarketplacePage() {
     setSelectedSpecialties([])
     setSelectedStatus("all")
     setSelectedSampleRange("all")
+    setCurrentPage(1)
   }
 
   const toggleModality = (modality: string) => {
@@ -197,6 +209,13 @@ export default function DataMarketplacePage() {
     }
     return true
   })
+
+  // 分页
+  const totalPages = Math.ceil(filteredDatasets.length / itemsPerPage)
+  const paginatedDatasets = filteredDatasets.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -379,12 +398,15 @@ export default function DataMarketplacePage() {
               {/* 结果计数 */}
               <p className="text-sm text-muted-foreground mb-4">
                 共找到 <span className="font-mono font-medium text-foreground">{filteredDatasets.length}</span> 个数据集
+                {totalPages > 1 && (
+                  <span>，显示第 {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredDatasets.length)} 个</span>
+                )}
               </p>
 
               {/* 数据集卡片网格 */}
-              {filteredDatasets.length > 0 ? (
+              {paginatedDatasets.length > 0 ? (
                 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                  {filteredDatasets.map((dataset) => (
+                  {paginatedDatasets.map((dataset) => (
                     <Card
                       key={dataset.id}
                       className="hover:shadow-md transition-all cursor-pointer group"
@@ -445,6 +467,57 @@ export default function DataMarketplacePage() {
                     </Button>
                   </CardContent>
                 </Card>
+              )}
+
+              {/* 分页 */}
+              {totalPages > 1 && (
+                <Pagination className="mt-8">
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+                    
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                      if (
+                        page === 1 ||
+                        page === totalPages ||
+                        (page >= currentPage - 1 && page <= currentPage + 1)
+                      ) {
+                        return (
+                          <PaginationItem key={page}>
+                            <PaginationLink
+                              onClick={() => setCurrentPage(page)}
+                              isActive={currentPage === page}
+                              className="cursor-pointer"
+                            >
+                              {page}
+                            </PaginationLink>
+                          </PaginationItem>
+                        )
+                      } else if (
+                        page === currentPage - 2 ||
+                        page === currentPage + 2
+                      ) {
+                        return (
+                          <PaginationItem key={page}>
+                            <PaginationEllipsis />
+                          </PaginationItem>
+                        )
+                      }
+                      return null
+                    })}
+                    
+                    <PaginationItem>
+                      <PaginationNext 
+                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               )}
             </div>
           </div>

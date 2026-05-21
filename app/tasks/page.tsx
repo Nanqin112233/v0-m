@@ -16,6 +16,15 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  PaginationEllipsis,
+} from "@/components/ui/pagination"
+import {
   Search,
   Plus,
   Clock,
@@ -190,6 +199,8 @@ export default function TaskMarketplacePage() {
   const [selectedMinLevel, setSelectedMinLevel] = useState<string>("all")
   const [sortBy, setSortBy] = useState("newest")
   const [activeTab, setActiveTab] = useState("all")
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 6
 
   const userLevel = mockUser.level
   const isExpert = userLevel >= 5
@@ -205,6 +216,13 @@ export default function TaskMarketplacePage() {
     }
     return true
   })
+
+  // 分页
+  const totalPages = Math.ceil(filteredTasks.length / itemsPerPage)
+  const paginatedTasks = filteredTasks.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
 
   // 判断用户是否可以领取任务
   const canClaimTask = (task: typeof mockTasks[0]) => {
@@ -315,9 +333,17 @@ export default function TaskMarketplacePage() {
 
             {/* 全部任务 */}
             <TabsContent value="all" className="space-y-6">
+              {/* 结果计数 */}
+              <p className="text-sm text-muted-foreground">
+                共找到 <span className="font-mono font-medium text-foreground">{filteredTasks.length}</span> 个任务
+                {totalPages > 1 && (
+                  <span>，显示第 {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredTasks.length)} 个</span>
+                )}
+              </p>
+              
               {/* 任务列表 */}
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {filteredTasks.map((task) => {
+                {paginatedTasks.map((task) => {
                   const deadlineStatus = getDeadlineStatus(task.deadline)
                   const claimable = canClaimTask(task)
                   const levelBlocked = userLevel < task.minLevel
@@ -411,6 +437,57 @@ export default function TaskMarketplacePage() {
                   )
                 })}
               </div>
+
+              {/* 分页 */}
+              {totalPages > 1 && (
+                <Pagination className="mt-6">
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+                    
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                      if (
+                        page === 1 ||
+                        page === totalPages ||
+                        (page >= currentPage - 1 && page <= currentPage + 1)
+                      ) {
+                        return (
+                          <PaginationItem key={page}>
+                            <PaginationLink
+                              onClick={() => setCurrentPage(page)}
+                              isActive={currentPage === page}
+                              className="cursor-pointer"
+                            >
+                              {page}
+                            </PaginationLink>
+                          </PaginationItem>
+                        )
+                      } else if (
+                        page === currentPage - 2 ||
+                        page === currentPage + 2
+                      ) {
+                        return (
+                          <PaginationItem key={page}>
+                            <PaginationEllipsis />
+                          </PaginationItem>
+                        )
+                      }
+                      return null
+                    })}
+                    
+                    <PaginationItem>
+                      <PaginationNext 
+                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              )}
             </TabsContent>
 
             {/* 我的接单 */}
