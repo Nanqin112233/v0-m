@@ -74,17 +74,17 @@ const workflowSteps = [
 // 平台统计（克制呈现，使用种子数据）
 const platformStats = [
   {
-    title: "接入影像总量（TB）",
+    title: "标注记录",
     value: "1,245,800",
     icon: <FileStack className="h-5 w-5 text-primary" />,
   },
   {
-    title: "数据集",
+    title: "接入影像总量（TB）",
     value: "486",
     icon: <Database className="h-5 w-5 text-primary" />,
   },
   {
-    title: "活跃任务",
+    title: "活跃任务数",
     value: "128",
     icon: <ClipboardList className="h-5 w-5 text-primary" />,
   },
