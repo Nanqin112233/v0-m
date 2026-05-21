@@ -202,7 +202,7 @@ export default function HomePage() {
               <div className="mt-10 flex items-center justify-center gap-4 flex-wrap">
                 {isLoggedIn ? (
                   <Button size="lg" className="bg-primary hover:bg-primary/90 h-12 px-8" asChild>
-                    <Link href="/me">
+                    <Link href="/workspace/annotation">
                       进入工作台
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
