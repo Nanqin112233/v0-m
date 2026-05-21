@@ -78,8 +78,8 @@ export function UserMenu({
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "flex items-center gap-2 rounded-full px-2 py-1.5 shadow-sm",
-            "hover:bg-accent/50 hover:shadow-md transition-all cursor-pointer",
+            "flex items-center gap-2 rounded-lg px-2 py-1.5",
+            "hover:bg-accent/50 transition-colors cursor-pointer",
             "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
             className
           )}

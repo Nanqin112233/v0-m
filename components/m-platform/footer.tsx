@@ -42,7 +42,7 @@ export function Footer({ className }: FooterProps) {
 
   return (
     <footer
-      className={cn("bg-card shadow-[0_-4px_24px_rgba(0,0,0,0.08)]", className)}
+      className={cn("border-t border-border bg-card", className)}
     >
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
@@ -79,7 +79,7 @@ export function Footer({ className }: FooterProps) {
         </div>
 
         {/* 底部版权 */}
-        <div className="mt-12 pt-8">
+        <div className="mt-12 border-t border-border pt-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-muted-foreground">
               &copy; {currentYear} M平台. 保留所有权利.
