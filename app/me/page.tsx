@@ -50,7 +50,7 @@ const myDatasets = [
     id: "DS001",
     name: "胸部CT肺结节数据集",
     samples: 12500,
-    status: "active" as const,
+    status: "public" as const,
     views: 1280,
     createdAt: "2026-03-15",
   },
@@ -65,7 +65,7 @@ const myPublishedTasks = [
     lockedFunds: 5250,
     claimed: 12,
     maxClaims: 20,
-    status: "active" as const,
+    status: "open" as const,
   },
 ]
 
