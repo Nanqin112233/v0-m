@@ -159,11 +159,11 @@ const mockRefunds = [
 ]
 
 export default function AssetsPage() {
-  const [flowTypeFilter, setFlowTypeFilter] = useState("")
+  const [flowTypeFilter, setFlowTypeFilter] = useState("all")
   const [activeTab, setActiveTab] = useState("flows")
 
   const filteredFlows = mockFlows.filter(flow => {
-    if (!flowTypeFilter) return true
+    if (flowTypeFilter === "all") return true
     return flow.type === flowTypeFilter
   })
 
@@ -298,7 +298,7 @@ export default function AssetsPage() {
                           <SelectValue placeholder="全部类型" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">全部类型</SelectItem>
+                          <SelectItem value="all">全部类型</SelectItem>
                           <SelectItem value="income">收入</SelectItem>
                           <SelectItem value="expense">支出</SelectItem>
                           <SelectItem value="pending">审核中</SelectItem>

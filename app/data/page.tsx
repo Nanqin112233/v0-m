@@ -152,17 +152,17 @@ export default function DataMarketplacePage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedModalities, setSelectedModalities] = useState<string[]>([])
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([])
-  const [selectedStatus, setSelectedStatus] = useState<string>("")
-  const [selectedSampleRange, setSelectedSampleRange] = useState<string>("")
+  const [selectedStatus, setSelectedStatus] = useState<string>("all")
+  const [selectedSampleRange, setSelectedSampleRange] = useState<string>("all")
   const [sortBy, setSortBy] = useState("newest")
 
-  const hasFilters = selectedModalities.length > 0 || selectedSpecialties.length > 0 || selectedStatus || selectedSampleRange
+  const hasFilters = selectedModalities.length > 0 || selectedSpecialties.length > 0 || selectedStatus !== "all" || selectedSampleRange !== "all"
 
   const clearFilters = () => {
     setSelectedModalities([])
     setSelectedSpecialties([])
-    setSelectedStatus("")
-    setSelectedSampleRange("")
+    setSelectedStatus("all")
+    setSelectedSampleRange("all")
   }
 
   const toggleModality = (modality: string) => {
@@ -192,7 +192,7 @@ export default function DataMarketplacePage() {
     if (selectedSpecialties.length > 0 && !selectedSpecialties.includes(dataset.specialty)) {
       return false
     }
-    if (selectedStatus && dataset.status !== selectedStatus) {
+    if (selectedStatus !== "all" && dataset.status !== selectedStatus) {
       return false
     }
     return true
@@ -320,7 +320,7 @@ export default function DataMarketplacePage() {
                       <SelectValue placeholder="全部状态" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">全部状态</SelectItem>
+                      <SelectItem value="all">全部状态</SelectItem>
                       {statusOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
@@ -338,7 +338,7 @@ export default function DataMarketplacePage() {
                       <SelectValue placeholder="全部规模" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">全部规模</SelectItem>
+                      <SelectItem value="all">全部规模</SelectItem>
                       {sampleRangeOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}

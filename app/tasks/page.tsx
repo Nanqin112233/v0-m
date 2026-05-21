@@ -186,8 +186,8 @@ const myPublishedTasks = [
 
 export default function TaskMarketplacePage() {
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedModality, setSelectedModality] = useState<string>("")
-  const [selectedMinLevel, setSelectedMinLevel] = useState<string>("")
+  const [selectedModality, setSelectedModality] = useState<string>("all")
+  const [selectedMinLevel, setSelectedMinLevel] = useState<string>("all")
   const [sortBy, setSortBy] = useState("newest")
   const [activeTab, setActiveTab] = useState("all")
 
@@ -200,7 +200,7 @@ export default function TaskMarketplacePage() {
     if (searchQuery && !task.title.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false
     }
-    if (selectedModality && task.modality !== selectedModality) {
+    if (selectedModality !== "all" && task.modality !== selectedModality) {
       return false
     }
     return true
@@ -281,7 +281,7 @@ export default function TaskMarketplacePage() {
                       <SelectValue placeholder="模态" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">全部</SelectItem>
+                      <SelectItem value="all">全部</SelectItem>
                       <SelectItem value="CT">CT</SelectItem>
                       <SelectItem value="MRI">MRI</SelectItem>
                       <SelectItem value="X-Ray">X-Ray</SelectItem>
@@ -294,7 +294,7 @@ export default function TaskMarketplacePage() {
                       <SelectValue placeholder="最低等级" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">全部等级</SelectItem>
+                      <SelectItem value="all">全部等级</SelectItem>
                       <SelectItem value="1">Lv1 及以上</SelectItem>
                       <SelectItem value="2">Lv2 及以上</SelectItem>
                       <SelectItem value="3">Lv3 及以上</SelectItem>
