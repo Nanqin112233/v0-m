@@ -80,7 +80,7 @@ const platformStats = [
   },
   {
     title: "接入影像总量（TB）",
-    value: "486",
+    value: "486.3",
     icon: <Database className="h-5 w-5 text-primary" />,
   },
   {
