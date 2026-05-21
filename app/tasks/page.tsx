@@ -262,59 +262,59 @@ export default function TaskMarketplacePage() {
               {isPublisher && <TabsTrigger value="published">我发布的</TabsTrigger>}
             </TabsList>
 
+            {/* 搜索和筛选 - 所有tab下可见 */}
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="搜索任务..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <div className="flex gap-2">
+                <Select value={selectedModality} onValueChange={setSelectedModality}>
+                  <SelectTrigger className="w-[120px]">
+                    <SelectValue placeholder="模态" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">全部</SelectItem>
+                    <SelectItem value="CT">CT</SelectItem>
+                    <SelectItem value="MRI">MRI</SelectItem>
+                    <SelectItem value="X-Ray">X-Ray</SelectItem>
+                    <SelectItem value="超声">超声</SelectItem>
+                    <SelectItem value="OCT">OCT</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={selectedMinLevel} onValueChange={setSelectedMinLevel}>
+                  <SelectTrigger className="w-[140px]">
+                    <SelectValue placeholder="最低等级" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">全部等级</SelectItem>
+                    <SelectItem value="1">Lv1 及以上</SelectItem>
+                    <SelectItem value="2">Lv2 及以上</SelectItem>
+                    <SelectItem value="3">Lv3 及以上</SelectItem>
+                    <SelectItem value="4">Lv4 及以上</SelectItem>
+                    <SelectItem value="5">Lv5 及以上</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-[130px]">
+                    <SelectValue placeholder="排序" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="newest">最新发布</SelectItem>
+                    <SelectItem value="deadline">截止最近</SelectItem>
+                    <SelectItem value="reward">奖励最高</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
             {/* 全部任务 */}
             <TabsContent value="all" className="space-y-6">
-              {/* 搜索和筛选 */}
-              <div className="flex flex-col gap-4 sm:flex-row">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    placeholder="搜索任务..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <Select value={selectedModality} onValueChange={setSelectedModality}>
-                    <SelectTrigger className="w-[120px]">
-                      <SelectValue placeholder="模态" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">全部</SelectItem>
-                      <SelectItem value="CT">CT</SelectItem>
-                      <SelectItem value="MRI">MRI</SelectItem>
-                      <SelectItem value="X-Ray">X-Ray</SelectItem>
-                      <SelectItem value="超声">超声</SelectItem>
-                      <SelectItem value="OCT">OCT</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Select value={selectedMinLevel} onValueChange={setSelectedMinLevel}>
-                    <SelectTrigger className="w-[140px]">
-                      <SelectValue placeholder="最低等级" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">全部等级</SelectItem>
-                      <SelectItem value="1">Lv1 及以上</SelectItem>
-                      <SelectItem value="2">Lv2 及以上</SelectItem>
-                      <SelectItem value="3">Lv3 及以上</SelectItem>
-                      <SelectItem value="4">Lv4 及以上</SelectItem>
-                      <SelectItem value="5">Lv5 及以上</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger className="w-[130px]">
-                      <SelectValue placeholder="排序" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="newest">最新发布</SelectItem>
-                      <SelectItem value="deadline">截止最近</SelectItem>
-                      <SelectItem value="reward">奖励最高</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
               {/* 任务列表 */}
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {filteredTasks.map((task) => {
