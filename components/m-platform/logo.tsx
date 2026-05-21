@@ -23,26 +23,22 @@ export function Logo({ className, showText = true, size = "md" }: LogoProps) {
 
   return (
     <div className={cn("flex items-center gap-2", className)}>
-      {/* M平台 Logo - 简洁猫头鹰，轮廓即M字母 */}
+      {/* M平台 Logo - 简洁M字形 */}
       <svg
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className={cn(sizeClasses[size], "w-auto")}
       >
-        {/* 猫头鹰身体 - M形轮廓 */}
+        <rect width="32" height="32" rx="8" className="fill-primary" />
         <path
-          d="M4 26V10L11 17L16 6L21 17L28 10V26H4Z"
-          className="fill-primary"
+          d="M7 24V8L16 17L25 8V24"
+          stroke="white"
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
         />
-        
-        {/* 左眼 */}
-        <circle cx="11" cy="20" r="2.5" className="fill-background" />
-        <circle cx="11.5" cy="19.5" r="1" className="fill-foreground" />
-        
-        {/* 右眼 */}
-        <circle cx="21" cy="20" r="2.5" className="fill-background" />
-        <circle cx="21.5" cy="19.5" r="1" className="fill-foreground" />
       </svg>
       {showText && (
         <span
