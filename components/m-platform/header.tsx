@@ -14,8 +14,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { Menu, Bell } from "lucide-react"
+import { Menu, Bell, Globe } from "lucide-react"
 import { useState } from "react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 // 导航配置
 const navItems = [
@@ -66,6 +72,12 @@ export function Header({
 }: HeaderProps) {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [currentLang, setCurrentLang] = useState<"zh" | "en">("zh")
+
+  const languages = [
+    { code: "zh" as const, label: "中文" },
+    { code: "en" as const, label: "English" },
+  ]
 
   const handleNavClick = (href: string) => {
     setMobileMenuOpen(false)
@@ -109,8 +121,32 @@ export function Header({
           </nav>
         </div>
 
-        {/* 右侧: 钱包 + 通知 + 用户菜单 / 登录按钮 */}
+        {/* 右侧: 多语言 + 钱包 + 通知 + 用户菜单 / 登录按钮 */}
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* 多语言切换 */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
+                <Globe className="h-5 w-5" />
+                <span className="sr-only">切换语言</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {languages.map((lang) => (
+                <DropdownMenuItem
+                  key={lang.code}
+                  onClick={() => setCurrentLang(lang.code)}
+                  className={cn(
+                    "cursor-pointer",
+                    currentLang === lang.code && "bg-accent font-medium"
+                  )}
+                >
+                  {lang.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           {isLoggedIn && user ? (
             <>
               {/* 钱包预览 */}
@@ -129,19 +165,21 @@ export function Header({
                 variant="ghost"
                 size="icon"
                 className="relative"
-                onClick={onNotificationClick}
+                asChild
               >
-                <Bell className="h-5 w-5" />
-                {notificationCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-medium text-destructive-foreground">
-                    {notificationCount > 99 ? "99+" : notificationCount}
+                <Link href="/notifications">
+                  <Bell className="h-5 w-5" />
+                  {notificationCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-medium text-destructive-foreground">
+                      {notificationCount > 99 ? "99+" : notificationCount}
+                    </span>
+                  )}
+                  <span className="sr-only">
+                    {notificationCount > 0
+                      ? `${notificationCount} 条未读通知`
+                      : "没有新通知"}
                   </span>
-                )}
-                <span className="sr-only">
-                  {notificationCount > 0
-                    ? `${notificationCount} 条未读通知`
-                    : "没有新通知"}
-                </span>
+                </Link>
               </Button>
 
               {/* 用户菜单 */}
@@ -153,10 +191,12 @@ export function Header({
             </>
           ) : (
             <>
-              <Button variant="ghost" onClick={onLogin}>
-                登录
+              <Button variant="ghost" asChild>
+                <Link href="/login">登录</Link>
               </Button>
-              <Button onClick={onLogin}>注册</Button>
+              <Button asChild>
+                <Link href="/login">注册</Link>
+              </Button>
             </>
           )}
 
