@@ -373,7 +373,7 @@ export default function HomePage() {
                 信任阶梯
               </h2>
               <p className="mt-3 text-muted-foreground">
-                L0 + Lv1~Lv9 十级体系���Lv5 及以上解锁审核权限
+                Lv5 及以上解锁审核权限
               </p>
             </div>
             
