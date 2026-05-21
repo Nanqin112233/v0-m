@@ -197,7 +197,7 @@ export default function HomePage() {
                 加速全球医学影像行业迈入智能化时代
               </h1>
               <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
-                M平台 = 医学数据资产 × 标注任务撮合 × 沙箱积分账本
+                中国拥有超 3285 项医学影像检测，但智能化辅助诊断渗透率不足 1%。我们致力于打破传统瓶颈，全面加速临床级智能化应用的普及与落地。
               </p>
               <div className="mt-10 flex items-center justify-center gap-4 flex-wrap">
                 {isLoggedIn ? (
