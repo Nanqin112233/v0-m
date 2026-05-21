@@ -406,52 +406,48 @@ export default function DataMarketplacePage() {
 
               {/* 数据集卡片网格 */}
               {paginatedDatasets.length > 0 ? (
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                   {paginatedDatasets.map((dataset) => (
                     <Card
                       key={dataset.id}
-                      className="hover:shadow-md transition-all cursor-pointer group"
+                      className="hover:shadow-md transition-all cursor-pointer group overflow-hidden"
                     >
-                      {/* 封面图区域 */}
-                      <div className="aspect-[16/9] bg-muted rounded-t-xl flex items-center justify-center">
-                        <Database className="h-12 w-12 text-muted-foreground/30" />
+                      {/* 封面图区域 - 更紧凑 */}
+                      <div className="aspect-[2/1] bg-gradient-to-br from-muted/80 to-muted flex items-center justify-center">
+                        <Database className="h-8 w-8 text-muted-foreground/20" />
                       </div>
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex-1 min-w-0">
-                            <CardTitle className="text-base truncate group-hover:text-primary transition-colors">
-                              {dataset.name}
-                            </CardTitle>
-                            <CardDescription className="mt-1 flex items-center gap-1.5 text-sm">
-                              <Building2 className="h-3.5 w-3.5" />
-                              <span className="truncate">{dataset.owner}</span>
-                              <LevelBadge level={dataset.ownerLevel} size="sm" />
-                            </CardDescription>
-                          </div>
+                      <div className="p-3">
+                        {/* 标题和机构 */}
+                        <h3 className="text-sm font-medium truncate group-hover:text-primary transition-colors">
+                          {dataset.name}
+                        </h3>
+                        <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
+                          <Building2 className="h-3 w-3 flex-shrink-0" />
+                          <span className="truncate">{dataset.owner}</span>
+                          <LevelBadge level={dataset.ownerLevel} size="sm" />
                         </div>
-                      </CardHeader>
-                      <CardContent className="pt-0 space-y-3">
-                        <p className="text-sm text-muted-foreground line-clamp-2">
-                          {dataset.description}
-                        </p>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <Badge variant="outline" className="text-xs font-normal">
+                        
+                        {/* 标签 */}
+                        <div className="mt-2 flex items-center gap-1 flex-wrap">
+                          <span className="px-1.5 py-0.5 text-[10px] rounded bg-muted text-muted-foreground">
                             {dataset.modality}
-                          </Badge>
-                          <Badge variant="outline" className="text-xs font-normal">
+                          </span>
+                          <span className="px-1.5 py-0.5 text-[10px] rounded bg-muted text-muted-foreground">
                             {dataset.specialty}
-                          </Badge>
+                          </span>
                           <DatasetStatusBadge status={dataset.status} />
                         </div>
-                        <div className="flex items-center justify-between pt-3 mt-3">
-                          <span className="text-sm text-muted-foreground">
+                        
+                        {/* 底部信息 */}
+                        <div className="mt-2 pt-2 border-t border-border/50 flex items-center justify-between text-xs">
+                          <span className="text-muted-foreground">
                             <span className="font-mono font-medium text-foreground">{dataset.samples.toLocaleString()}</span> 样本
                           </span>
-                          <span className="text-sm font-medium text-[#0F8770]">
+                          <span className="font-medium text-[#0F8770]">
                             <span className="font-mono">{dataset.price.toLocaleString()}</span> 积分
                           </span>
                         </div>
-                      </CardContent>
+                      </div>
                     </Card>
                   ))}
                 </div>
