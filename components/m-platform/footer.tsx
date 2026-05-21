@@ -10,7 +10,7 @@ const footerLinks = {
     links: [
       { label: "数据广场", href: "/data" },
       { label: "任务广场", href: "/tasks" },
-      { label: "排行榜", href: "/leaderboard" },
+      { label: "排行榜", href: "/rankings" },
       { label: "社区", href: "/community" },
     ],
   },

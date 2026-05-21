@@ -23,6 +23,7 @@ import {
   ChevronDown,
   Shield,
 } from "lucide-react"
+import Link from "next/link"
 
 // 用户等级配置
 const levelConfig: Record<
@@ -65,12 +66,12 @@ export function UserMenu({
     .slice(0, 2)
 
   const menuItems = [
-    { icon: User, label: "个人中心", path: "/profile" },
-    { icon: Wallet, label: "我的资产", path: "/wallet" },
-    { icon: Award, label: "认证中心", path: "/certification" },
-    { icon: Trophy, label: "排行榜", path: "/leaderboard" },
+    { icon: User, label: "个人中心", path: "/me" },
+    { icon: Wallet, label: "我的资产", path: "/me/assets" },
+    { icon: Award, label: "认证中心", path: "/me/certification" },
+    { icon: Trophy, label: "排行榜", path: "/rankings" },
     { icon: MessageSquare, label: "社区", path: "/community" },
-    { icon: Settings, label: "设置", path: "/settings" },
+    { icon: Settings, label: "设置", path: "/me/settings" },
   ]
 
   return (
@@ -139,13 +140,11 @@ export function UserMenu({
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           {menuItems.map((item) => (
-            <DropdownMenuItem
-              key={item.path}
-              onClick={() => onNavigate?.(item.path)}
-              className="cursor-pointer"
-            >
-              <item.icon className="mr-2 h-4 w-4" />
-              <span>{item.label}</span>
+            <DropdownMenuItem key={item.path} asChild className="cursor-pointer">
+              <Link href={item.path}>
+                <item.icon className="mr-2 h-4 w-4" />
+                <span>{item.label}</span>
+              </Link>
             </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>

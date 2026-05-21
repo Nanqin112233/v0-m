@@ -8,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import Link from "next/link"
 
 interface WalletPreviewProps {
   className?: string
@@ -45,7 +46,8 @@ export function WalletPreview({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <button
+          <Link
+            href="/me/assets"
             className={cn(
               "flex items-center gap-2 rounded-full bg-card px-4 py-2 shadow-sm",
               "hover:shadow-md transition-all cursor-pointer",
@@ -78,7 +80,7 @@ export function WalletPreview({
                 </span>
               </div>
             )}
-          </button>
+          </Link>
         </TooltipTrigger>
         <TooltipContent side="bottom" align="end" className="p-3">
           <div className="space-y-2 text-sm">
