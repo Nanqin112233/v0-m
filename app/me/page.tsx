@@ -112,7 +112,7 @@ export default function PersonalCenterPage() {
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           {/* 身份卡片 */}
-          <Card className="border border-border mb-8">
+          <Card className="mb-8">
             <CardContent className="py-6">
               <div className="flex flex-col sm:flex-row sm:items-center gap-6">
                 <Avatar className="h-20 w-20">
@@ -156,7 +156,7 @@ export default function PersonalCenterPage() {
           {/* 钱包概览卡片 */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
             <Link href="/me/assets">
-              <Card className="border border-border hover:border-primary/30 transition-colors cursor-pointer group">
+              <Card className="hover:shadow-lg transition-all cursor-pointer group">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2 text-muted-foreground">
@@ -174,7 +174,7 @@ export default function PersonalCenterPage() {
             </Link>
 
             <Link href="/me/assets">
-              <Card className="border border-border hover:border-primary/30 transition-colors cursor-pointer group">
+              <Card className="hover:shadow-lg transition-all cursor-pointer group">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2 text-muted-foreground">
@@ -192,7 +192,7 @@ export default function PersonalCenterPage() {
             </Link>
 
             <Link href="/me/assets">
-              <Card className="border border-border hover:border-primary/30 transition-colors cursor-pointer group">
+              <Card className="hover:shadow-lg transition-all cursor-pointer group">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2 text-muted-foreground">
@@ -210,7 +210,7 @@ export default function PersonalCenterPage() {
             </Link>
 
             <Link href="/me/assets">
-              <Card className="border border-border hover:border-primary/30 transition-colors cursor-pointer group">
+              <Card className="hover:shadow-lg transition-all cursor-pointer group">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2 text-muted-foreground">
@@ -232,7 +232,7 @@ export default function PersonalCenterPage() {
           <div className="grid gap-6 lg:grid-cols-2">
             {/* 发布方面板 */}
             {isPublisher && (
-              <Card className="border border-border">
+              <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
@@ -252,7 +252,7 @@ export default function PersonalCenterPage() {
                       {myDatasets.map((dataset) => (
                         <div
                           key={dataset.id}
-                          className="flex items-center justify-between p-3 rounded-lg border border-border bg-card"
+                          className="flex items-center justify-between p-3 rounded-xl bg-muted/30"
                         >
                           <div className="flex-1 min-w-0">
                             <p className="font-medium truncate">{dataset.name}</p>
@@ -273,7 +273,7 @@ export default function PersonalCenterPage() {
                       {myPublishedTasks.map((task) => (
                         <div
                           key={task.id}
-                          className="flex items-center justify-between p-3 rounded-lg border border-border bg-card"
+                          className="flex items-center justify-between p-3 rounded-xl bg-muted/30"
                         >
                           <div className="flex-1 min-w-0">
                             <p className="font-medium truncate">{task.title}</p>
@@ -313,7 +313,7 @@ export default function PersonalCenterPage() {
 
             {/* 标注者面板 */}
             {isWorker && (
-              <Card className="border border-border">
+              <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
@@ -331,7 +331,7 @@ export default function PersonalCenterPage() {
                       {myClaimedTasks.map((task) => (
                         <div
                           key={task.id}
-                          className="p-4 rounded-lg border border-border bg-card space-y-3"
+                          className="p-4 rounded-xl bg-muted/30 space-y-3"
                         >
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex-1 min-w-0">
@@ -377,7 +377,7 @@ export default function PersonalCenterPage() {
 
             {/* 专家面板（Lv5+） */}
             {isExpert && (
-              <Card className="border border-border">
+              <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>

@@ -40,8 +40,8 @@
   --destructive: #C53030;
   --destructive-foreground: #FFFFFF;
   
-  /* 边框和输入 */
-  --border: #D8DEE4;
+  /* 边框和输入 - imed使用透明border配合shadow */
+  --border: transparent;
   --input: #E8ECF0;
   --ring: #1E63B5;
   
@@ -52,8 +52,8 @@
   --chart-4: #7AB8E5;
   --chart-5: #B0D4F1;
   
-  /* 圆角 - 8px基准 */
-  --radius: 0.5rem;
+  /* 圆角 - imed theme 大圆角基准 */
+  --radius: 1.5rem;
   
   /* 侧边栏 */
   --sidebar: #FFFFFF;
@@ -65,13 +65,13 @@
   --sidebar-border: #D8DEE4;
   --sidebar-ring: #1E63B5;
   
-  /* 阴影 */
+  /* 阴影 - imed theme 阴影替代border */
   --shadow-x: 0px;
-  --shadow-y: 2px;
-  --shadow-blur: 8px;
+  --shadow-y: 8px;
+  --shadow-blur: 24px;
   --shadow-spread: 0px;
-  --shadow-opacity: 0.08;
-  --shadow-color: #1A1D21;
+  --shadow-opacity: 0.12;
+  --shadow-color: #000000;
 }
 
 /* 深色模式 - 标注工作台专用 */
@@ -111,8 +111,8 @@
   --destructive: #F85149;
   --destructive-foreground: #FFFFFF;
   
-  /* 边框和输入 */
-  --border: #30363D;
+  /* 边框和输入 - 深色模式 */
+  --border: transparent;
   --input: #21262D;
   --ring: #4A9AD8;
   

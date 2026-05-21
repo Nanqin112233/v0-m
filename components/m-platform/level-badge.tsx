@@ -171,10 +171,9 @@ export function LevelBadge({
     <Badge
       variant="outline"
       className={cn(
-        "font-semibold gap-1 border whitespace-nowrap",
+        "font-semibold gap-1 whitespace-nowrap shadow-sm",
         config.bgColor,
         config.color,
-        config.borderColor,
         sizeClasses[size],
         className
       )}
@@ -200,7 +199,7 @@ export function LevelBadge({
                 {config.description}
               </p>
             </div>
-            <div className="border-t border-border pt-2">
+            <div className="pt-2">
               <p className="text-xs font-medium mb-1">权限：</p>
               <ul className="text-xs text-muted-foreground space-y-0.5">
                 {config.permissions.map((perm) => (

@@ -47,8 +47,8 @@ export function WalletPreview({
         <TooltipTrigger asChild>
           <button
             className={cn(
-              "flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5",
-              "hover:bg-accent/50 transition-colors cursor-pointer",
+              "flex items-center gap-2 rounded-full bg-card px-3 py-1.5 shadow-sm",
+              "hover:bg-accent/50 hover:shadow-md transition-all cursor-pointer",
               "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
               className
             )}
@@ -102,7 +102,7 @@ export function WalletPreview({
             </div>
             {change !== 0 && (
               <>
-                <div className="border-t border-border pt-2" />
+                <div className="pt-2" />
                 <div className="flex items-center justify-between gap-6">
                   <span className="text-muted-foreground">24h 变动</span>
                   <span
