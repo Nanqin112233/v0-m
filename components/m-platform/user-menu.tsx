@@ -17,8 +17,6 @@ import {
   Settings,
   Award,
   Wallet,
-  Trophy,
-  MessageSquare,
   LogOut,
   ChevronDown,
   Shield,
@@ -69,8 +67,6 @@ export function UserMenu({
     { icon: User, label: "个人中心", path: "/me" },
     { icon: Wallet, label: "我的资产", path: "/me/assets" },
     { icon: Award, label: "认证中心", path: "/me/certification" },
-    { icon: Trophy, label: "排行榜", path: "/rankings" },
-    { icon: MessageSquare, label: "社区", path: "/community" },
     { icon: Settings, label: "设置", path: "/me/settings" },
   ]
 
@@ -79,16 +75,20 @@ export function UserMenu({
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "flex items-center gap-2 rounded-full px-2 py-1.5 shadow-sm",
-            "hover:shadow-md transition-all cursor-pointer",
+            "flex items-center gap-2 rounded-full px-2 py-1.5",
+            "bg-gradient-to-r from-primary/10 via-primary/5 to-accent/20",
+            "hover:from-primary/20 hover:via-primary/10 hover:to-accent/30",
+            "shadow-sm hover:shadow-md transition-all cursor-pointer",
             "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+            "border border-primary/10",
             className
           )}
         >
           <div className="relative">
-            <Avatar className="h-8 w-8">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary/80 to-chart-2 blur-[2px] opacity-60" />
+            <Avatar className="h-8 w-8 relative ring-2 ring-white/80">
               <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback className="bg-primary/10 text-primary text-xs font-medium">
+              <AvatarFallback className="bg-gradient-to-br from-primary to-chart-2 text-white text-xs font-medium">
                 {initials}
               </AvatarFallback>
             </Avatar>

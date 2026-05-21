@@ -112,16 +112,39 @@ export default function PersonalCenterPage() {
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           {/* 身份卡片 */}
-          <Card className="border border-border mb-8">
-            <CardContent className="py-6">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-                <Avatar className="h-20 w-20">
-                  <AvatarImage src={mockUser.avatar} />
-                  <AvatarFallback className="text-2xl bg-primary/10 text-primary">
-                    {mockUser.name.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
+          <Card className="mb-8 overflow-hidden">
+            {/* 渐变背景头部 */}
+            <div className="relative h-32 bg-gradient-to-r from-primary via-chart-2 to-chart-3">
+              {/* 像素网格覆盖层 */}
+              <div 
+                className="absolute inset-0 opacity-20"
+                style={{
+                  backgroundImage: `
+                    linear-gradient(90deg, transparent 50%, rgba(255,255,255,0.1) 50%),
+                    linear-gradient(0deg, transparent 50%, rgba(255,255,255,0.1) 50%)
+                  `,
+                  backgroundSize: '8px 8px'
+                }}
+              />
+              {/* 光晕效果 */}
+              <div className="absolute top-0 right-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-1/3 w-48 h-48 bg-white/10 rounded-full blur-2xl" />
+            </div>
+            
+            <CardContent className="relative pt-0 pb-6">
+              {/* 头像 - 悬浮在渐变背景上 */}
+              <div className="flex flex-col sm:flex-row sm:items-end gap-6 -mt-12">
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary via-chart-2 to-chart-3 blur-md opacity-60 scale-110" />
+                  <Avatar className="h-24 w-24 relative ring-4 ring-background shadow-xl">
+                    <AvatarImage src={mockUser.avatar} />
+                    <AvatarFallback className="text-2xl bg-gradient-to-br from-primary to-chart-2 text-white font-bold">
+                      {mockUser.name.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+                
+                <div className="flex-1 pt-2">
                   <div className="flex flex-wrap items-center gap-3 mb-2">
                     <h1 className="text-2xl font-bold text-foreground">{mockUser.name}</h1>
                     <LevelBadge level={mockUser.level} size="md" />
@@ -141,7 +164,8 @@ export default function PersonalCenterPage() {
                     <span>加入于 {mockUser.joinDate}</span>
                   </div>
                 </div>
-                <div className="flex gap-2">
+                
+                <div className="flex gap-2 sm:self-center">
                   <Button variant="outline" asChild>
                     <Link href="/me/settings">账号设置</Link>
                   </Button>
