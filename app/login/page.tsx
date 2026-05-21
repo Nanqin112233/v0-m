@@ -67,7 +67,7 @@ export default function LoginPage() {
             <Logo size="lg" />
           </Link>
           <p className="mt-3 text-sm text-muted-foreground">
-            登录或注册以继续
+            欢迎回来
           </p>
         </div>
 
@@ -193,7 +193,7 @@ export default function LoginPage() {
                 </>
               ) : (
                 <>
-                  登录 / 注册
+                  登录
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </>
               )}
@@ -205,10 +205,6 @@ export default function LoginPage() {
             登录即表示同意{" "}
             <Link href="/terms" className="text-primary hover:underline">
               服务条款
-            </Link>
-            {" "}和{" "}
-            <Link href="/privacy" className="text-primary hover:underline">
-              隐私政策
             </Link>
           </p>
         </div>
