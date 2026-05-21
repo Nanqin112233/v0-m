@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Logo } from "./logo"
-import { WalletPreview } from "./wallet-preview"
 import { UserMenu } from "./user-menu"
 import { Button } from "@/components/ui/button"
 import {
@@ -149,17 +148,6 @@ export function Header({
 
           {isLoggedIn && user ? (
             <>
-              {/* 钱包预览 */}
-              {wallet && (
-                <div className="hidden sm:block">
-                  <WalletPreview
-                    balance={wallet.balance}
-                    locked={wallet.locked}
-                    change={wallet.change}
-                  />
-                </div>
-              )}
-
               {/* 通知按钮 */}
               <Button
                 variant="ghost"
@@ -185,6 +173,7 @@ export function Header({
               {/* 用户菜单 */}
               <UserMenu
                 user={user}
+                wallet={wallet}
                 onNavigate={onNavigate}
                 onLogout={onLogout}
               />
@@ -234,15 +223,16 @@ export function Header({
                   )
                 })}
 
-                {/* 移动端钱包信息 */}
-                {isLoggedIn && wallet && (
-                  <div className="mt-4 pt-4">
-                    <WalletPreview
-                      balance={wallet.balance}
-                      locked={wallet.locked}
-                      change={wallet.change}
-                      className="w-full justify-center"
-                    />
+                {/* 移动端导航 */}
+                {isLoggedIn && (
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <Link 
+                      href="/me/assets"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block px-4 py-3 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-full transition-all"
+                    >
+                      我的资产
+                    </Link>
                   </div>
                 )}
               </nav>

@@ -20,6 +20,8 @@ import {
   LogOut,
   ChevronDown,
   Shield,
+  Coins,
+  Lock,
 } from "lucide-react"
 import Link from "next/link"
 
@@ -45,6 +47,11 @@ interface UserMenuProps {
     level: number
     verified: boolean
   }
+  wallet?: {
+    balance: number
+    locked: number
+    change?: number
+  }
   onNavigate?: (path: string) => void
   onLogout?: () => void
 }
@@ -52,6 +59,7 @@ interface UserMenuProps {
 export function UserMenu({
   className,
   user,
+  wallet,
   onNavigate,
   onLogout,
 }: UserMenuProps) {
@@ -137,6 +145,36 @@ export function UserMenu({
             </p>
           </div>
         </DropdownMenuLabel>
+        
+        {/* 钱包信息 */}
+        {wallet && (
+          <div className="px-2 py-2">
+            <Link 
+              href="/me/assets"
+              className="block rounded-lg bg-gradient-to-r from-primary/5 via-accent/30 to-primary/5 p-3 hover:from-primary/10 hover:via-accent/40 hover:to-primary/10 transition-all"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Coins className="h-3 w-3" />
+                  可用积分
+                </span>
+                <span className="text-sm font-bold text-foreground font-mono">
+                  {wallet.balance.toLocaleString()}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Lock className="h-3 w-3" />
+                  锁定中
+                </span>
+                <span className="text-xs text-muted-foreground font-mono">
+                  {wallet.locked.toLocaleString()}
+                </span>
+              </div>
+            </Link>
+          </div>
+        )}
+        
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           {menuItems.map((item) => (
