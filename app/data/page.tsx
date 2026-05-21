@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import {
   Select,
@@ -272,99 +271,101 @@ export default function DataMarketplacePage() {
 
           <div className="flex gap-6">
             {/* 左侧筛选栏 */}
-            <aside className="hidden lg:block w-60 flex-shrink-0">
-              <div className="sticky top-24 space-y-6">
+            <aside className="hidden lg:block w-56 flex-shrink-0">
+              <div className="sticky top-24 space-y-5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-sm font-medium text-foreground">
                     <SlidersHorizontal className="h-4 w-4" />
                     筛选条件
                   </div>
                   {hasFilters && (
-                    <Button variant="ghost" size="sm" onClick={clearFilters} className="h-7 text-xs">
+                    <Button variant="ghost" size="sm" onClick={clearFilters} className="h-6 text-xs px-2">
                       <X className="mr-1 h-3 w-3" />
                       清除
                     </Button>
                   )}
                 </div>
 
-                {/* 模态筛选 */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-medium">影像模态</Label>
-                  <div className="space-y-2">
-                    {modalityOptions.map((modality) => (
-                      <div key={modality} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`modality-${modality}`}
-                          checked={selectedModalities.includes(modality)}
-                          onCheckedChange={() => toggleModality(modality)}
-                        />
-                        <label
-                          htmlFor={`modality-${modality}`}
-                          className="text-sm text-muted-foreground cursor-pointer"
+                {/* 模态筛选 - 紧凑标签式 */}
+                <div className="space-y-2">
+                  <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">影像模态</Label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {modalityOptions.map((modality) => {
+                      const isSelected = selectedModalities.includes(modality)
+                      return (
+                        <button
+                          key={modality}
+                          onClick={() => toggleModality(modality)}
+                          className={`px-2.5 py-1 text-xs rounded-md transition-all ${
+                            isSelected
+                              ? "bg-primary text-primary-foreground shadow-sm"
+                              : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+                          }`}
                         >
                           {modality}
-                        </label>
-                      </div>
-                    ))}
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
 
-                {/* 科室筛选 */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-medium">科室</Label>
-                  <div className="space-y-2">
-                    {specialtyOptions.map((specialty) => (
-                      <div key={specialty} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`specialty-${specialty}`}
-                          checked={selectedSpecialties.includes(specialty)}
-                          onCheckedChange={() => toggleSpecialty(specialty)}
-                        />
-                        <label
-                          htmlFor={`specialty-${specialty}`}
-                          className="text-sm text-muted-foreground cursor-pointer"
+                {/* 科室筛选 - 紧凑标签式 */}
+                <div className="space-y-2">
+                  <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">科室</Label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {specialtyOptions.map((specialty) => {
+                      const isSelected = selectedSpecialties.includes(specialty)
+                      return (
+                        <button
+                          key={specialty}
+                          onClick={() => toggleSpecialty(specialty)}
+                          className={`px-2.5 py-1 text-xs rounded-md transition-all ${
+                            isSelected
+                              ? "bg-primary text-primary-foreground shadow-sm"
+                              : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+                          }`}
                         >
                           {specialty}
-                        </label>
-                      </div>
-                    ))}
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
 
-                {/* 状态筛选 */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-medium">状态</Label>
-                  <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="全部状态" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">全部状态</SelectItem>
-                      {statusOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* 样本规模筛选 */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-medium">样本规模</Label>
-                  <Select value={selectedSampleRange} onValueChange={setSelectedSampleRange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="全部规模" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">全部规模</SelectItem>
-                      {sampleRangeOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                {/* 状态和规模 - 紧凑下拉 */}
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">状态</Label>
+                    <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                      <SelectTrigger className="h-8 text-xs">
+                        <SelectValue placeholder="全部" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">全部状态</SelectItem>
+                        {statusOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">样本规模</Label>
+                    <Select value={selectedSampleRange} onValueChange={setSelectedSampleRange}>
+                      <SelectTrigger className="h-8 text-xs">
+                        <SelectValue placeholder="全部" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">全部规模</SelectItem>
+                        {sampleRangeOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
             </aside>
