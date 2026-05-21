@@ -149,12 +149,11 @@ export function UserMenu({
           ))}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={onLogout}
-          className="cursor-pointer text-destructive focus:text-destructive"
-        >
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>退出登录</span>
+        <DropdownMenuItem asChild className="cursor-pointer text-destructive focus:text-destructive">
+          <Link href="/login" onClick={onLogout}>
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>退出登录</span>
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
