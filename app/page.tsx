@@ -74,7 +74,7 @@ const workflowSteps = [
 // 平台统计（克制呈现，使用种子数据）
 const platformStats = [
   {
-    title: "样本总量",
+    title: "接入影像总量（TB）",
     value: "1,245,800",
     icon: <FileStack className="h-5 w-5 text-primary" />,
   },
@@ -89,7 +89,7 @@ const platformStats = [
     icon: <ClipboardList className="h-5 w-5 text-primary" />,
   },
   {
-    title: "贡献者",
+    title: "全球认证专家（位）",
     value: "3,892",
     icon: <Users className="h-5 w-5 text-primary" />,
   },
