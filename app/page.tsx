@@ -103,7 +103,7 @@ const hotDatasets = [
     owner: "协和医院影像中心",
     modality: "CT",
     samples: 12500,
-    status: "active" as const,
+    status: "public" as const,
   },
   {
     id: "DS002",
@@ -111,7 +111,7 @@ const hotDatasets = [
     owner: "华西医学影像研究院",
     modality: "MRI",
     samples: 8200,
-    status: "active" as const,
+    status: "public" as const,
   },
   {
     id: "DS003",
@@ -119,7 +119,7 @@ const hotDatasets = [
     owner: "中山眼科中心",
     modality: "OCT",
     samples: 15800,
-    status: "active" as const,
+    status: "public" as const,
   },
 ]
 
