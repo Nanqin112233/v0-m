@@ -139,7 +139,9 @@ export default function HomePage() {
         isLoggedIn={isLoggedIn}
         user={isLoggedIn ? mockUser : undefined}
         wallet={isLoggedIn ? mockWallet : undefined}
+        currentPath="/"
         notificationCount={isLoggedIn ? 3 : 0}
+        onNavigate={(path) => console.log("Navigate to:", path)}
         onLogout={handleLogout}
         onLogin={() => setLoginModalOpen(true)}
       />
