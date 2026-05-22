@@ -16,11 +16,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "M平台 - 医学影像数据资产平台",
-    template: "%s | M平台",
+    default: "AI医疗 | 全球医学影像数据与AI模型开发平台",
+    template: "%s | AI医疗",
   },
   description:
-    "医学影像数据资产平台，连接数据、标注与价值。提供医学数据资产管理、标注任务撮合、沙箱积分账本服务。",
+    "全球规模领先的医学影像数据平台，加速全球医学影像行业迈入智能化时代。提供医学数据资产管理、标注任务撮合、AI模型开发服务。",
   keywords: [
     "医学影像",
     "数据资产",
@@ -28,6 +28,7 @@ export const metadata: Metadata = {
     "影像标注",
     "数据平台",
     "医疗AI",
+    "iMedImage",
   ],
   authors: [{ name: "M平台" }],
   generator: "Next.js",

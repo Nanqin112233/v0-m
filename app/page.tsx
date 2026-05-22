@@ -1,26 +1,11 @@
 "use client"
 
-import { Header, Footer, StatCard, LevelBadge, TaskStatusBadge, DatasetStatusBadge } from "@/components/m-platform"
+import { Header } from "@/components/m-platform"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import {
-  Database,
-  ClipboardList,
-  Users,
-  FileStack,
-  ArrowRight,
-  Upload,
-  FileSearch,
-  CheckSquare,
-  Wallet,
-  Trophy,
-  MessageSquare,
-  Clock,
-  Coins,
-  ChevronRight,
-} from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import Link from "next/link"
+import { useState, useEffect, useCallback } from "react"
 
 // 模拟用户数据
 const mockUser = {
@@ -37,451 +22,545 @@ const mockWallet = {
   change: 2350,
 }
 
-// 业务闭环步骤（根据Brief：上传 → 发布 → 任务 → 标注 → 审核 → 钱包变化）
-const workflowSteps = [
-  {
-    icon: Upload,
-    title: "数据上传",
-    description: "机构上传医学影像数据集",
-    color: "bg-primary/10 text-primary",
-  },
-  {
-    icon: FileSearch,
-    title: "数据发布",
-    description: "发布至数据广场公开展示",
-    color: "bg-primary/10 text-primary",
-  },
-  {
-    icon: ClipboardList,
-    title: "任务发布",
-    description: "创建任务并锁仓积分",
-    color: "bg-[#0F8770]/10 text-[#0F8770]",
-  },
-  {
-    icon: CheckSquare,
-    title: "标注与审核",
-    description: "标注者完成后Lv5+专家审核",
-    color: "bg-[#0F8770]/10 text-[#0F8770]",
-  },
-  {
-    icon: Wallet,
-    title: "钱包结算",
-    description: "审核通过后积分自动结算",
-    color: "bg-[#0F8770]/10 text-[#0F8770]",
-  },
+// 跑马灯公告
+const announcements = [
+  "[资产发布] #SPEC-224 染色体非整倍体畸变数据集今日新增 12,500 例样本",
+  "[学术快讯] 24小时内新发表 Lancet 影像学论文已成功挂载对应微调模型体验入口",
+  "[确权清算] 智能网关今日已完成 48,200 次 API 调用利润分配，收益秒级到账",
 ]
 
-// 平台统计（克制呈现，使用种子数据）
-const platformStats = [
+// 排行榜轮播数据
+const boardData = [
   {
-    title: "标注记录",
-    value: "1,245,800",
-    icon: <FileStack className="h-5 w-5 text-primary" />,
+    title: "专家劳务分成榜",
+    items: [
+      { name: "王*平 教授 (胸部影像科)", value: "24,150 权值", rank: 1 },
+      { name: "刘*国 副主任医师", value: "18,210 权值", rank: 2 },
+    ],
+    valueColor: "text-emerald-600",
   },
   {
-    title: "接入影像总量（TB）",
-    value: "486.3",
-    icon: <Database className="h-5 w-5 text-primary" />,
+    title: "开发者大模型准确率榜",
+    items: [
+      { name: "DeepSight-染色体分割 V2.1", value: "99.42%", rank: 1 },
+      { name: "BioMind-微小结节分割", value: "98.15%", rank: 2 },
+    ],
+    valueColor: "text-primary",
   },
   {
-    title: "活跃任务数",
-    value: "128",
-    icon: <ClipboardList className="h-5 w-5 text-primary" />,
+    title: "优秀数据贡献持股机构",
+    items: [
+      { name: "浙江省肿瘤医院 (台州分组)", value: "1.2M 独立影像资产", rank: 1 },
+      { name: "浙江大学医学院附属儿童医院", value: "850K 独立影像资产", rank: 2 },
+    ],
+    valueColor: "text-foreground",
   },
-  {
-    title: "全球认证专家（位）",
-    value: "3,892",
-    icon: <Users className="h-5 w-5 text-primary" />,
-  },
-]
-
-// 热门数据集（mock）
-const hotDatasets = [
-  {
-    id: "DS001",
-    name: "胸部CT肺结节数据集",
-    owner: "协和医院影像中心",
-    modality: "CT",
-    samples: 12500,
-    status: "public" as const,
-  },
-  {
-    id: "DS002",
-    name: "脑部MRI肿瘤分割数据",
-    owner: "华西医学影像研究院",
-    modality: "MRI",
-    samples: 8200,
-    status: "public" as const,
-  },
-  {
-    id: "DS003",
-    name: "眼底OCT糖网病变数据",
-    owner: "中山眼科中心",
-    modality: "OCT",
-    samples: 15800,
-    status: "public" as const,
-  },
-]
-
-// 热门任务（mock）
-const hotTasks = [
-  {
-    id: "T001",
-    title: "肺结节良恶性标注",
-    reward: 5000,
-    minLevel: 3,
-    deadline: "2026-06-15",
-    claimed: 12,
-    maxClaims: 20,
-    status: "open" as const,
-  },
-  {
-    id: "T002",
-    title: "脑部肿瘤边界分割",
-    reward: 8000,
-    minLevel: 4,
-    deadline: "2026-06-20",
-    claimed: 5,
-    maxClaims: 10,
-    status: "open" as const,
-  },
-  {
-    id: "T003",
-    title: "视网膜病变分级标注",
-    reward: 3500,
-    minLevel: 2,
-    deadline: "2026-06-10",
-    claimed: 18,
-    maxClaims: 25,
-    status: "open" as const,
-  },
-]
-
-// 等级阶梯说明
-const levelDescriptions = [
-  { level: 0, label: "L0", name: "游客", ability: "仅浏览公开内容" },
-  { level: 1, label: "Lv1", name: "新手", ability: "基础标注" },
-  { level: 2, label: "Lv2", name: "初级", ability: "简单任务" },
-  { level: 3, label: "Lv3", name: "中级", ability: "复杂任务" },
-  { level: 4, label: "Lv4", name: "高级", ability: "高难任务" },
-  { level: 5, label: "Lv5", name: "专家", ability: "审核权限", highlight: true },
-  { level: 6, label: "Lv6", name: "资深专家", ability: "审核权限" },
-  { level: 7, label: "Lv7", name: "权威专家", ability: "审核权限" },
-  { level: 8, label: "Lv8", name: "首席专家", ability: "审核权限" },
-  { level: 9, label: "Lv9", name: "顶级专家", ability: "最高权限" },
 ]
 
 export default function HomePage() {
-  const isLoggedIn = true // 模拟已登录状态
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [loginModalOpen, setLoginModalOpen] = useState(false)
+  const [loginAccount, setLoginAccount] = useState("")
+  const [authCode, setAuthCode] = useState("")
+  const [channelType, setChannelType] = useState<"phone" | "email" | "unknown">("unknown")
+  
+  // 实时数字统计
+  const [imageVolume, setImageVolume] = useState(48291042)
+  const [labelRecords, setLabelRecords] = useState(4812094)
+  
+  // 排行榜轮播
+  const [currentBoardIndex, setCurrentBoardIndex] = useState(0)
+  const [boardOpacity, setBoardOpacity] = useState(1)
+
+  // 数字跳动效果
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setImageVolume(prev => prev + Math.floor(Math.random() * 12) + 1)
+      setLabelRecords(prev => prev + Math.floor(Math.random() * 8) + 1)
+    }, 2500)
+    return () => clearInterval(interval)
+  }, [])
+
+  // 排行榜轮播
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBoardOpacity(0)
+      setTimeout(() => {
+        setCurrentBoardIndex(prev => (prev + 1) % boardData.length)
+        setBoardOpacity(1)
+      }, 200)
+    }, 3500)
+    return () => clearInterval(interval)
+  }, [])
+
+  // 账号输入检测
+  const handleAccountInput = useCallback((value: string) => {
+    setLoginAccount(value)
+    const phoneRegex = /^1[3-9]\d{9}$/
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    
+    if (phoneRegex.test(value)) {
+      setChannelType("phone")
+    } else if (emailRegex.test(value)) {
+      setChannelType("email")
+    } else {
+      setChannelType("unknown")
+    }
+  }, [])
+
+  // 登录处理
+  const handleLogin = useCallback(() => {
+    if (!loginAccount) {
+      alert("请输入手机号或电子邮箱！")
+      return
+    }
+    setIsLoggedIn(true)
+    setLoginModalOpen(false)
+    alert("全球多通道验证通过！系统已为您自动绑定去中心化账户流节点安全关联。")
+  }, [loginAccount])
+
+  // 退出登录
+  const handleLogout = useCallback(() => {
+    setIsLoggedIn(false)
+    setLoginAccount("")
+    setAuthCode("")
+    alert("已成功断开去中心化账户流节点安全关联。")
+  }, [])
+
+  // 医生专家变现入口
+  const handleDoctorConversion = useCallback(() => {
+    if (!isLoggedIn) {
+      alert("【资质鉴权拦截】要素流转在线变现限定[认证医学专家]，检测到您未登录，已为您无缝激活急速登录网关。")
+      setLoginModalOpen(true)
+    } else {
+      window.location.href = "/tasks"
+    }
+  }, [isLoggedIn])
+
+  const currentBoard = boardData[currentBoardIndex]
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      {/* 全局顶部导航 */}
+    <div className="min-h-screen flex flex-col bg-white text-slate-800 font-sans antialiased selection:bg-primary selection:text-white">
+      {/* 跑马灯公告栏 */}
+      <div className="w-full bg-blue-50 border-b border-blue-100 py-2 text-xs text-blue-700 overflow-hidden select-none">
+        <div 
+          className="flex animate-marquee whitespace-nowrap"
+          style={{ 
+            animation: "marquee 30s linear infinite",
+          }}
+        >
+          {[...announcements, ...announcements].map((text, i) => (
+            <span key={i} className="mx-8">{text}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* 顶部导航 */}
       <Header
         isLoggedIn={isLoggedIn}
-        user={mockUser}
-        wallet={mockWallet}
-        notificationCount={3}
-        onNavigate={(path) => console.log("Navigate to:", path)}
-        onLogout={() => console.log("Logout")}
-        onNotificationClick={() => console.log("Notifications")}
+        user={isLoggedIn ? mockUser : undefined}
+        wallet={isLoggedIn ? mockWallet : undefined}
+        notificationCount={isLoggedIn ? 3 : 0}
+        onLogout={handleLogout}
+        onLogin={() => setLoginModalOpen(true)}
       />
 
-      {/* 主内容区 */}
-      <main className="flex-1">
-        {/* Hero 区域 */}
-        <section className="bg-gradient-to-b from-accent/50 to-background">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl text-balance leading-tight">
-                加速全球医学影像行业迈入智能化时代
-              </h1>
-              <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
-                中国拥有超 3285 项医学影像检测，但智能化辅助诊断渗透率不足 1%。我们致力于打破传统瓶颈，全面加速临床级智能化应用的普及与落地。
-              </p>
-              <div className="mt-10 flex items-center justify-center gap-4 flex-wrap">
-                {isLoggedIn ? (
-                  <Button size="lg" className="bg-primary hover:bg-primary/90 h-12 px-8" asChild>
-                    <Link href="/workspace/annotation">
-                      进入工作台
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                ) : (
-                  <Button size="lg" className="bg-primary hover:bg-primary/90 h-12 px-8" asChild>
-                    <Link href="/login">
-                      立即注册
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                )}
-                <Button size="lg" variant="outline" className="h-12 px-8" asChild>
-                  <Link href="/data">浏览数据广场</Link>
+      {/* 登录弹窗 */}
+      <Dialog open={loginModalOpen} onOpenChange={setLoginModalOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="text-center text-base font-black text-slate-900">
+              欢迎加入全球医疗要素网络
+            </DialogTitle>
+            <p className="text-[10px] text-slate-400 text-center mt-0.5">
+              系统根据输入动态分流（国内手机号 / 海外邮箱）
+            </p>
+          </DialogHeader>
+          
+          <div className="space-y-3 pt-2 text-xs">
+            <div className="space-y-1">
+              <label className="font-bold text-slate-700 block">
+                手机号 (+86) 或 电子邮箱 (Global Email)
+              </label>
+              <Input
+                type="text"
+                value={loginAccount}
+                onChange={(e) => handleAccountInput(e.target.value)}
+                placeholder="请输入大陆手机号 或 国际电子邮箱..."
+                className="bg-slate-50 border-slate-200 text-slate-800"
+              />
+            </div>
+            
+            <div className="space-y-1">
+              <div className="flex justify-between">
+                <label className="font-bold text-slate-700">
+                  {channelType === "phone" ? "手机短信验证码" : 
+                   channelType === "email" ? "邮箱验证码 / 独立密码" : 
+                   "验证码 / 独立密码"}
+                </label>
+                <span className={`text-[9px] px-1 rounded border font-mono ${
+                  channelType === "phone" 
+                    ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
+                    : channelType === "email"
+                    ? "bg-blue-50 text-blue-700 border-blue-200"
+                    : "bg-slate-100 text-slate-500 border-slate-200"
+                }`}>
+                  {channelType === "phone" ? "国内+86电信网关" :
+                   channelType === "email" ? "海外全球加密邮箱分流" :
+                   "请识别输入"}
+                </span>
+              </div>
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  value={authCode}
+                  onChange={(e) => setAuthCode(e.target.value)}
+                  placeholder="请输入校验要素..."
+                  className="flex-1 bg-slate-50 border-slate-200 text-slate-800"
+                />
+                <Button 
+                  type="button" 
+                  variant="outline"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200 px-3 text-[10px] shrink-0"
+                >
+                  获取验证码
                 </Button>
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* 关键指标卡片（克制呈现） */}
-        <section>
-          <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-              {platformStats.map((stat) => (
-                <Card key={stat.title}>
-                  <CardContent className="pt-6">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent">
-                        {stat.icon}
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">{stat.title}</p>
-                        <p className="text-2xl font-bold text-foreground font-mono">{stat.value}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="pt-2">
+              <Button 
+                onClick={handleLogin}
+                className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2.5 text-xs"
+              >
+                进入生态大盘 (登录即注册)
+              </Button>
             </div>
           </div>
-        </section>
+        </DialogContent>
+      </Dialog>
 
-        {/* 业务闭环时间线 */}
-        <section className="bg-card shadow-sm">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-                业务闭环
-              </h2>
-              <p className="mt-3 text-muted-foreground">
-                数据上传 → 数据发布 → 任务发布（锁仓）→ 标注 → 审核 → 钱包结算
-              </p>
+      {/* Hero 区域 */}
+      <section className="min-h-[70vh] flex flex-col justify-center items-center bg-gradient-to-b from-blue-50/30 to-white px-6 py-12 text-center relative">
+        <div className="max-w-5xl mx-auto text-center space-y-8">
+          <div className="inline-flex items-center space-x-2 bg-blue-50 border border-blue-200 text-blue-700 rounded-full px-4 py-1 text-xs font-medium">
+            <span>全球规模领先的医学影像数据平台</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 leading-tight text-balance">
+            加速全球医学影像行业迈入智能化时代
+          </h1>
+          <p className="max-w-2xl mx-auto text-xs md:text-sm text-slate-500 leading-relaxed">
+            中国拥有超 3200 项医学影像检测，但智能化辅助诊断渗透率不足 1%。我们致力于打破传统瓶颈，全面加速临床级智能化应用的普及与落地。
+          </p>
+          
+          {/* 统计卡片 */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-6 text-left">
+            <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+              <div className="text-[11px] text-slate-400 mb-1">接入影像总量 (TB)</div>
+              <div className="text-xl font-bold font-mono text-slate-900">
+                {imageVolume.toLocaleString()}
+              </div>
             </div>
+            <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+              <div className="text-[11px] text-slate-400 mb-1">覆盖适应症/检测项</div>
+              <div className="text-xl font-bold font-mono text-slate-900">
+                3,200+ <span className="text-xs text-slate-400 font-normal">/ 5,000</span>
+              </div>
+            </div>
+            <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+              <div className="text-[11px] text-slate-400 mb-1">全球认证专家 (位)</div>
+              <div className="text-xl font-bold font-mono text-slate-900">12,450</div>
+            </div>
+            <div className="bg-white p-5 rounded-xl border border-blue-100 shadow-sm bg-gradient-to-br from-white to-blue-50/20">
+              <div className="text-[11px] text-primary mb-1">标注记录</div>
+              <div className="text-xl font-bold font-mono text-primary">
+                {labelRecords.toLocaleString()} <span className="text-xs text-slate-400 font-normal">Cases</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 解耦三大核心 */}
+      <section className="py-20 px-6 bg-slate-50 border-b border-slate-100">
+        <div className="max-w-5xl mx-auto space-y-12">
+          <div className="text-center space-y-3">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 text-balance">
+              打破院墙限制：让沉睡的影像资产，跨时空连接全球专家智库
+            </h2>
+            <p className="text-xs md:text-sm text-slate-500">
+              将海量数据获取能力与专家高年资智力彻底并行解耦，全面释放产业效率。
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* 数据端解耦 */}
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between group hover:border-primary/40 transition">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-xl text-primary">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold text-slate-900 text-sm mt-3">数据端解耦</h3>
+                <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                  数据资产拥有者无需操心标注，一键上传脱敏数据，即可转化为长效分红的资产。
+                </p>
+              </div>
+              <Link 
+                href="/data"
+                className="w-full text-center bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-primary font-semibold text-xs py-2.5 rounded-lg border border-slate-200 hover:border-blue-200 transition block"
+              >
+                医院/机构：让闲置数据变资产 &rarr;
+              </Link>
+            </div>
+
+            {/* 标注端解耦 */}
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between group hover:border-primary/40 transition">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-cyan-50 flex items-center justify-center text-xl text-cyan-600">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold text-slate-900 text-sm mt-3">标注端解耦</h3>
+                <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                  全球高年资医生突破地域限制，用碎片时间与顶级专业经验在线变现。
+                </p>
+              </div>
+              <button 
+                onClick={handleDoctorConversion}
+                className="w-full text-center bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-primary font-semibold text-xs py-2.5 rounded-lg border border-slate-200 hover:border-blue-200 transition"
+              >
+                高年资医生：开启专家经验变现 &rarr;
+              </button>
+            </div>
+
+            {/* 区块链确权 */}
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between group hover:border-primary/40 transition">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-xl text-emerald-600">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                  </svg>
+                </div>
+                <h3 className="font-bold text-slate-900 text-sm mt-3">区块链确权</h3>
+                <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                  {"每一份贡献都有据可查，API 只要被调用，收益秒级分账，上传者即为资产\"股东\"。"}
+                </p>
+              </div>
+              <div className="text-[11px] text-emerald-600 bg-emerald-50/50 border border-emerald-100 rounded-lg p-2 text-center font-medium">
+                清算结算系统全合规支持
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 安全防线 */}
+      <section className="max-w-7xl mx-auto px-6 py-16 border-t border-slate-100 relative overflow-hidden group">
+        {/* DNA 背景动画 */}
+        <div className="absolute inset-0 opacity-20 pointer-events-none flex items-center justify-center">
+          <svg className="w-full h-full max-w-4xl" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+            <path d="M10,50 Q25,20 40,50 T70,50 T100,50" strokeWidth="0.3" className="stroke-cyan-500 animate-pulse" />
+            <path d="M10,50 Q25,80 40,50 T70,50 T100,50" strokeWidth="0.3" className="stroke-primary animate-pulse" />
+          </svg>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-center relative z-10">
+          <div className="lg:col-span-3 space-y-6">
+            <h2 className="text-xl md:text-2xl font-black tracking-tight flex items-center space-x-2 text-slate-900">
+              <span>构筑要素主权的双重物理安全防线</span>
+            </h2>
             
-            {/* 时间线 */}
-            <div className="relative">
-              {/* 连接线 */}
-              <div className="absolute top-12 left-0 right-0 h-0.5 bg-muted hidden lg:block" />
+            <div className="space-y-4 text-xs">
+              <div className="border-l-4 border-primary bg-slate-50 p-4 rounded-xl hover:bg-slate-100/50 transition">
+                <h4 className="font-bold text-slate-900 text-sm">防线一：像素级 Data-DNA 追踪</h4>
+                <p className="text-slate-500 mt-1 leading-relaxed">
+                  引入彩色激光打印机序列号追踪技术。在导出的图像中隐式植入不可察觉的明码与暗码。任何一张流出平台的数据，均可精准溯源至具体用户名、IP、分发时间点。
+                </p>
+              </div>
               
-              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
-                {workflowSteps.map((step, index) => (
-                  <div key={step.title} className="relative flex flex-col items-center text-center">
-                    {/* 步骤圆点 */}
-                    <div className={`relative z-10 flex h-24 w-24 items-center justify-center rounded-2xl ${step.color} bg-background shadow-sm`}>
-                      <step.icon className="h-10 w-10" />
-                    </div>
-                    {/* 步骤编号 */}
-                    <div className="absolute -top-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground shadow-sm">
-                      {index + 1}
-                    </div>
-                    <h3 className="mt-4 font-semibold text-foreground">
-                      {step.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                      {step.description}
-                    </p>
-                  </div>
-                ))}
+              <div className="border-l-4 border-primary bg-slate-50 p-4 rounded-xl hover:bg-slate-100/50 transition">
+                <h4 className="font-bold text-slate-900 text-sm">防线二：合规与法律兜底</h4>
+                <p className="text-slate-500 mt-1 leading-relaxed">
+                  联合顶级律所起草闭环合同。所有数据流转严格符合 HIPAA 及国内数据出境、脱敏合规标准，全面支持事后追责与司法穿透。
+                </p>
               </div>
             </div>
           </div>
-        </section>
-
-        {/* 热门数据集 + 热门任务 */}
-        <section>
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-            {/* 热门数据集 */}
-            <div className="mb-12">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-foreground">热门数据集</h2>
-                <Link href="/data" className="text-sm text-primary hover:underline flex items-center gap-1">
-                  查看全部 <ChevronRight className="h-4 w-4" />
-                </Link>
+          
+          <div className="lg:col-span-2 bg-slate-50 border border-slate-100 p-6 rounded-2xl space-y-4 shadow-sm">
+            <div className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">安全与合规生态伙伴联合认证</div>
+            <div className="grid grid-cols-1 gap-2 text-center font-bold text-xs text-slate-700">
+              <div className="bg-white p-3.5 rounded-xl border border-slate-150 flex items-center justify-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                <span>腾讯云 安全防线 (Tencent Cloud Secure Escrow)</span>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {hotDatasets.map((dataset) => (
-                  <Card key={dataset.id} className="hover:shadow-md transition-shadow cursor-pointer">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex-1 min-w-0">
-                          <CardTitle className="text-base truncate">{dataset.name}</CardTitle>
-                          <CardDescription className="mt-1 truncate">{dataset.owner}</CardDescription>
-                        </div>
-                        <DatasetStatusBadge status={dataset.status} />
-                      </div>
-                    </CardHeader>
-                    <CardContent className="pt-0">
-                      <div className="flex items-center gap-3 text-sm">
-                        <Badge variant="secondary" className="font-normal">{dataset.modality}</Badge>
-                        <span className="text-muted-foreground">
-                          <span className="font-mono">{dataset.samples.toLocaleString()}</span> 样本
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+              <div className="bg-white p-3.5 rounded-xl border border-slate-150 flex items-center justify-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
+                <span>新华三 算力审计 (H3C Infrastructure)</span>
               </div>
-            </div>
-
-            {/* 热门任务 */}
-            <div>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-foreground">热门任务</h2>
-                <Link href="/tasks" className="text-sm text-primary hover:underline flex items-center gap-1">
-                  查看全部 <ChevronRight className="h-4 w-4" />
-                </Link>
+              <div className="bg-white p-3.5 rounded-xl border border-slate-150 flex items-center justify-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                <span>顶级律所 法律合规 (Legal Compliance)</span>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {hotTasks.map((task) => (
-                  <Card key={task.id} className="hover:shadow-md transition-shadow cursor-pointer">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-start justify-between gap-2">
-                        <CardTitle className="text-base flex-1 min-w-0 truncate">{task.title}</CardTitle>
-                        <TaskStatusBadge status={task.status} />
-                      </div>
-                    </CardHeader>
-                    <CardContent className="pt-0 space-y-3">
-                      <div className="flex items-center justify-between text-sm">
-                        <div className="flex items-center gap-1.5 text-[#0F8770] font-medium">
-                          <Coins className="h-4 w-4" />
-                          <span className="font-mono">{task.reward.toLocaleString()}</span> 积分
-                        </div>
-                        <LevelBadge level={task.minLevel} size="sm" />
-                      </div>
-                      <div className="flex items-center justify-between text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1.5">
-                          <Clock className="h-4 w-4" />
-                          截止 {task.deadline}
-                        </div>
-                        <span>
-                          <span className="font-mono">{task.claimed}</span>/{task.maxClaims} 已领取
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+              <div className="bg-white p-3.5 rounded-xl border border-slate-150 flex items-center justify-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span>去中心化 区块链存证 (Blockchain Provenance)</span>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* 信任阶梯（L0 + Lv1~Lv9） */}
-        <section className="bg-card shadow-sm">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-                信任阶梯
-              </h2>
-              <p className="mt-3 text-muted-foreground">
-                Lv5 及以上解锁审核权限
-              </p>
+      {/* 核心大模型工厂 */}
+      <section className="max-w-7xl mx-auto px-6 py-16 space-y-8 border-t border-slate-100">
+        <div className="text-center space-y-2">
+          <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">iMedImage 核心专科大模型工厂</h2>
+          <p className="text-xs text-slate-400">{"\"从原始影像到生产级应用，只需三步。\""}</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+          <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-3 relative overflow-hidden">
+            <div className="text-xs font-mono font-black text-primary">STEP 01 / FINE-TUNING</div>
+            <h4 className="text-sm font-black text-slate-900">大模型分布式微调</h4>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              预置 iMedImage 基础大模型，支持一键配置超参、TensorBoard 监控，打造专属专科模型。
+            </p>
+            <div className="text-[9px] bg-slate-50 text-slate-400 p-2 rounded font-mono border border-slate-100">
+              [config] --base_model iMedImage-Core --lr 2e-5 --metrics=AUC/mAP
             </div>
+          </div>
+          <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-3 relative overflow-hidden">
+            <div className="text-xs font-mono font-black text-cyan-700">STEP 02 / DEPLOYMENT</div>
+            <h4 className="text-sm font-black text-slate-900">快捷部署 (Deployment)</h4>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              零代码部署操作，一键部署。
+            </p>
+            <div className="text-[9px] bg-slate-50 text-slate-400 p-2 rounded font-mono border border-slate-100">
+              [export] --format=onnx/tensorrt_engine --node=cloud_cluster
+            </div>
+          </div>
+          <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-3 relative overflow-hidden">
+            <div className="text-xs font-mono font-black text-emerald-700">STEP 03 / INFERENCE</div>
+            <h4 className="text-sm font-black text-slate-900">高并发推理 (Inference)</h4>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              {"毫秒级批量推理，输出临床级 CAM（可解释性分析）热力图，全链路\"先充值，后扣费\"风控防白嫖。"}
+            </p>
+            <div className="text-[9px] bg-red-50 text-red-700 p-2 rounded font-bold font-mono border border-red-100">
+              [security] status=active; firewall_mode=prepaid_intercept
+            </div>
+          </div>
+        </div>
+
+        <div className="text-center pt-2">
+          <Link 
+            href="https://github.com" 
+            target="_blank" 
+            className="inline-block bg-primary hover:bg-primary/90 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition shadow-md shadow-primary/10"
+          >
+            进入 MaaS 深度开发控制台 &rarr;
+          </Link>
+        </div>
+      </section>
+
+      {/* 论文/新闻/排行榜 三栏 */}
+      <section className="py-20 px-6 bg-white border-t border-slate-100">
+        <div className="max-w-7xl mx-auto space-y-10">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            {/* 等级展示 */}
-            <div className="overflow-x-auto pb-4">
-              <div className="flex gap-3 min-w-max justify-center">
-                {levelDescriptions.map((item) => (
-                  <div
-                    key={item.level}
-                    className={`flex flex-col items-center p-4 rounded-xl ${
-                      item.highlight 
-                        ? "bg-[#0F8770]/5 shadow-md" 
-                        : "bg-background shadow-sm"
-                    } min-w-[100px]`}
-                  >
-                    {item.level === 0 ? (
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-muted-foreground text-sm font-bold">
-                        L0
-                      </div>
-                    ) : (
-                      <LevelBadge level={item.level} size="md" />
-                    )}
-                    <span className="mt-2 text-sm font-medium text-foreground">{item.name}</span>
-                    <span className="mt-1 text-xs text-muted-foreground text-center">{item.ability}</span>
-                    {item.highlight && (
-                      <Badge className="mt-2 bg-[#0F8770] text-white text-xs">审核起点</Badge>
-                    )}
+            {/* 热点论文与模型联动 */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <h3 className="text-sm font-bold text-slate-800 flex items-center">热点论文与模型联动</h3>
+                <Link href="/community" className="text-xs text-primary font-medium hover:underline">去社区 &rarr;</Link>
+              </div>
+              <div className="space-y-3">
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+                  <span className="text-[9px] bg-blue-100 text-blue-700 font-bold px-1.5 py-0.5 rounded">Lancet Oncology</span>
+                  <h4 className="text-xs font-bold text-slate-800 leading-tight">基于多中心深度学习的早期肺腺癌微环境时序病理特征识别</h4>
+                  <div className="text-[11px] text-primary font-mono font-bold pt-1 cursor-pointer hover:underline">挂载模型：一键复现体验 &rarr;</div>
+                </div>
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+                  <span className="text-[9px] bg-indigo-100 text-indigo-700 font-bold px-1.5 py-0.5 rounded">Radiology</span>
+                  <h4 className="text-xs font-bold text-slate-800 leading-tight">三维多模态 CT 剂量估计大模型在儿科多中心临床中的可行性研究</h4>
+                  <div className="text-[11px] text-primary font-mono font-bold pt-1 cursor-pointer hover:underline">挂载模型：一键复现体验 &rarr;</div>
+                </div>
+              </div>
+            </div>
+
+            {/* 行业前沿新闻 */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <h3 className="text-sm font-bold text-slate-800 flex items-center">行业前沿新闻</h3>
+                <Link href="/community" className="text-xs text-primary font-medium hover:underline">去社区 &rarr;</Link>
+              </div>
+              <div className="space-y-3 text-xs">
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
+                  <div className="text-slate-400 text-[10px]">2026年5月18日</div>
+                  <h4 className="font-bold text-slate-800 hover:text-primary cursor-pointer transition">国家卫健委：推进二级及以上医院普及影像诊断AI部署政策落地情况汇报</h4>
+                </div>
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
+                  <div className="text-slate-400 text-[10px]">2026年5月15日</div>
+                  <h4 className="font-bold text-slate-800 hover:text-primary cursor-pointer transition">全球细胞遗传学联合会：高分辨显微染色体核型大模型算法通过最新临床工程验证</h4>
+                </div>
+              </div>
+            </div>
+
+            {/* 生态实时贡献排行榜 */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <h3 className="text-sm font-bold text-slate-800 flex items-center">生态实时贡献排行榜</h3>
+                <span className="text-[9px] bg-blue-50 text-blue-700 font-bold px-1.5 rounded border border-blue-100 font-mono">
+                  {currentBoard.title}
+                </span>
+              </div>
+              
+              <div 
+                className="text-xs space-y-2.5 min-h-[100px] transition-opacity duration-300"
+                style={{ opacity: boardOpacity }}
+              >
+                {currentBoard.items.map((item, index) => (
+                  <div key={index} className="flex items-center justify-between bg-slate-50 p-2 rounded-lg border border-slate-100">
+                    <span className="font-medium text-slate-700">
+                      {item.rank === 1 ? "1" : "2"} {item.name}
+                    </span>
+                    <span className={`font-mono font-black ${currentBoard.valueColor}`}>
+                      {item.value}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
+
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* 入口卡片（四张RouteCard） */}
-        <section>
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              <Link href="/data">
-                <Card className="h-full hover:shadow-lg transition-all group cursor-pointer">
-                  <CardHeader>
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                      <Database className="h-6 w-6" />
-                    </div>
-                    <CardTitle className="mt-4">数据广场</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      浏览公开数据资产��按模态、科室筛选
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
+      {/* Footer */}
+      <footer className="bg-slate-900 text-slate-400 text-center text-xs py-12 px-6 space-y-3">
+        <p className="max-w-4xl mx-auto text-slate-500">
+          所有数据流转严格遵循 HIPAA 与中国医疗数据安全管理合规标准。全面通过国家网信办算法备案。要素资产采用端到端不可逆脱敏及 Data-DNA 追踪算法加密上链。
+        </p>
+        <p className="text-slate-600">&copy; 2026 AI医疗生态平台. Powered by iMedImage Technical Group.</p>
+      </footer>
 
-              <Link href="/tasks">
-                <Card className="h-full hover:shadow-lg transition-all group cursor-pointer">
-                  <CardHeader>
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#0F8770]/10 text-[#0F8770] group-hover:bg-[#0F8770] group-hover:text-white transition-colors">
-                      <ClipboardList className="h-6 w-6" />
-                    </div>
-                    <CardTitle className="mt-4">任务广场</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      领取标注任务，赚取积分收益
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-
-              <Link href="/rankings">
-                <Card className="h-full hover:shadow-lg transition-all group cursor-pointer">
-                  <CardHeader>
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-colors">
-                      <Trophy className="h-6 w-6" />
-                    </div>
-                    <CardTitle className="mt-4">排行榜</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      查看医生、专家、机构贡献排名
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-
-              <Link href="/community">
-                <Card className="h-full hover:shadow-lg transition-all group cursor-pointer">
-                  <CardHeader>
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/10 text-purple-600 group-hover:bg-purple-500 group-hover:text-white transition-colors">
-                      <MessageSquare className="h-6 w-6" />
-                    </div>
-                    <CardTitle className="mt-4">社区</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      医学讨论交流，分享专业见解
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      {/* 全局底部 */}
-      <Footer />
+      {/* 跑马灯动画样式 */}
+      <style jsx>{`
+        @keyframes marquee {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          display: inline-flex;
+          white-space: nowrap;
+          animation: marquee 30s linear infinite;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
     </div>
   )
 }
