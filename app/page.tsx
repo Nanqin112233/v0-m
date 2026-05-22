@@ -245,7 +245,7 @@ export default function HomePage() {
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
               <div className="text-[11px] text-slate-400 mb-1">覆盖适应症/检测项</div>
               <div className="text-xl font-bold font-mono text-slate-900">
-                3,200+ <span className="text-xs text-slate-400 font-normal">/ 5,000</span>
+                3,200+ <span className="text-xs text-slate-400 font-normal">/ 3,285</span>
               </div>
             </div>
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
