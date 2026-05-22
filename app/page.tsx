@@ -327,7 +327,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="font-bold text-slate-900 text-sm mt-3">区块链确权</h3>
                 <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                  {"每一份贡献都有据可查，API 只要被调用，收益秒级分账，上传者即为资产\"股东\"���"}
+                  {"每一份贡献都有据可查，API 只要被调用，收益秒级分账，上传者即为资产\"股东\""}
                 </p>
               </div>
               <div className="text-[11px] text-emerald-600 bg-emerald-50/50 border border-emerald-100 rounded-lg p-2 text-center font-medium">
@@ -459,7 +459,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* 行业动态 */}
+            {/* 行���动态 */}
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                 <h3 className="text-sm font-bold text-slate-800 flex items-center">行业动态</h3>
