@@ -239,7 +239,7 @@ export default function HomePage() {
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
               <div className="text-[11px] text-slate-400 mb-1">接入影像总量 (TB)</div>
               <div className="text-xl font-bold font-mono text-slate-900">
-                {imageVolume.toLocaleString()}
+                482.3
               </div>
             </div>
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
