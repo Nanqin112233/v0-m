@@ -22,13 +22,6 @@ const mockWallet = {
   change: 2350,
 }
 
-// 跑马灯公告
-const announcements = [
-  "[资产发布] #SPEC-224 染色体非整倍体畸变数据集今日新增 12,500 例样本",
-  "[学术快讯] 24小时内新发表 Lancet 影像学论文已成功挂载对应微调模型体验入口",
-  "[确权清算] 智能网关今日已完成 48,200 次 API 调用利润分配，收益秒级到账",
-]
-
 // 排行榜轮播数据
 const boardData = [
   {
@@ -141,20 +134,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 font-sans antialiased selection:bg-primary selection:text-white">
-      {/* 跑马灯公告栏 */}
-      <div className="w-full bg-blue-50 border-b border-blue-100 py-2 text-xs text-blue-700 overflow-hidden select-none">
-        <div 
-          className="flex animate-marquee whitespace-nowrap"
-          style={{ 
-            animation: "marquee 30s linear infinite",
-          }}
-        >
-          {[...announcements, ...announcements].map((text, i) => (
-            <span key={i} className="mx-8">{text}</span>
-          ))}
-        </div>
-      </div>
-
       {/* 顶部导航 */}
       <Header
         isLoggedIn={isLoggedIn}
@@ -205,7 +184,7 @@ export default function HomePage() {
                     ? "bg-blue-50 text-blue-700 border-blue-200"
                     : "bg-slate-100 text-slate-500 border-slate-200"
                 }`}>
-                  {channelType === "phone" ? "国内+86电信网关" :
+                  {channelType === "phone" ? "国内+86���信网关" :
                    channelType === "email" ? "海外全球加密邮箱分流" :
                    "请识别输入"}
                 </span>
@@ -346,7 +325,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="font-bold text-slate-900 text-sm mt-3">区块链确权</h3>
                 <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                  {"每一份贡献都有据可查，API 只要被调用，收益秒级分账，上传者即为资产\"股东\"。"}
+                  {"每一份贡献都有据可查，API 只要被调用，收益秒级分账，上传者即为资产\"股东\"���"}
                 </p>
               </div>
               <div className="text-[11px] text-emerald-600 bg-emerald-50/50 border border-emerald-100 rounded-lg p-2 text-center font-medium">
