@@ -439,10 +439,10 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto space-y-10">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            {/* 热点论文与模型联动 */}
+            {/* 学术前沿 */}
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                <h3 className="text-sm font-bold text-slate-800 flex items-center">热点论文与模型联动</h3>
+                <h3 className="text-sm font-bold text-slate-800 flex items-center">学术前沿</h3>
                 <Link href="/community" className="text-xs text-primary font-medium hover:underline">去社区 &rarr;</Link>
               </div>
               <div className="space-y-3">
@@ -459,10 +459,10 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* 行业前沿新闻 */}
+            {/* 行业动态 */}
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                <h3 className="text-sm font-bold text-slate-800 flex items-center">行业前沿新闻</h3>
+                <h3 className="text-sm font-bold text-slate-800 flex items-center">行业动态</h3>
                 <Link href="/community" className="text-xs text-primary font-medium hover:underline">去社区 &rarr;</Link>
               </div>
               <div className="space-y-3 text-xs">
@@ -477,10 +477,10 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* 生态实时贡献排行榜 */}
+            {/* 实时贡献排行榜 */}
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                <h3 className="text-sm font-bold text-slate-800 flex items-center">生态实时贡献排行榜</h3>
+                <h3 className="text-sm font-bold text-slate-800 flex items-center">实时贡献排行榜</h3>
                 <span className="text-[9px] bg-blue-50 text-blue-700 font-bold px-1.5 rounded border border-blue-100 font-mono">
                   {currentBoard.title}
                 </span>
