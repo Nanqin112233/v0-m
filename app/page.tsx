@@ -253,9 +253,9 @@ export default function HomePage() {
               <div className="text-xl font-bold font-mono text-slate-900">12,450</div>
             </div>
             <div className="bg-white p-5 rounded-xl border border-blue-100 shadow-sm bg-gradient-to-br from-white to-blue-50/20">
-              <div className="text-[11px] text-primary mb-1">标注记录</div>
+              <div className="text-[11px] text-primary mb-1">标注记录（例）</div>
               <div className="text-xl font-bold font-mono text-primary">
-                {labelRecords.toLocaleString()} <span className="text-xs text-slate-400 font-normal">Cases</span>
+                {labelRecords.toLocaleString()}
               </div>
             </div>
           </div>
