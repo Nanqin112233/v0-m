@@ -71,11 +71,13 @@ export function Header({
 }: HeaderProps) {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [currentLang, setCurrentLang] = useState<"zh" | "en">("zh")
+  const [currentLang, setCurrentLang] = useState<"zh-CN" | "en" | "zh-TW" | "ja">("zh-CN")
 
   const languages = [
-    { code: "zh" as const, label: "中文" },
+    { code: "zh-CN" as const, label: "简体中文" },
     { code: "en" as const, label: "English" },
+    { code: "zh-TW" as const, label: "繁體中文" },
+    { code: "ja" as const, label: "日本語" },
   ]
 
   const handleNavClick = (href: string) => {
